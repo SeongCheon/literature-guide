@@ -1,0 +1,1557 @@
+<!doctype html>
+<!--
+선행연구 길잡이 (Prior Research Guide)
+MIT License. Copyright (c) 2026 [YOUR NAME]
+
+Includes design tokens adapted from Arc Library (https://github.com/kuratlielia/arc-library):
+
+  MIT License
+  Copyright (c) 2026 Elia Kuratli
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+See NOTICE.md for third-party notices.
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="연구 아이디어에서 연구 의제까지, 선행연구 조사와 논문 분석을 단계별 프롬프트로 안내하는 도구">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%93%91%3C/text%3E%3C/svg%3E">
+<title>선행연구 길잡이</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Arc Library foundation tokens (kuratlielia/arc-library, MIT), adapted for a static page */
+:root{
+  color-scheme:light;
+  --background:oklch(100% 0 0);
+  --surface:oklch(100% 0 0);
+  --surface-muted:oklch(97.8% 0 0);
+  --surface-sunk:oklch(98.8% 0 0);
+  --foreground:oklch(15% 0 0);
+  --text-secondary:oklch(46% 0 0);
+  --text-muted:oklch(59% 0 0);
+  --border:oklch(93.5% 0 0);
+  --border-subtle:oklch(96.5% 0 0);
+  --border-strong:oklch(82% 0 0);
+  --accent:#7747ff; --accent-strong:#5528ce; --accent-subtle:rgb(119 71 255 / .13);
+  --control-on:oklch(23% 0 0); --control-glyph:oklch(100% 0 0);
+  --control-track:oklch(89.5% 0 0);
+  --success:oklch(49% .19 150);
+  --warning:oklch(58% .18 75);
+  --shadow-resting:0 1px 2px oklch(0% 0 0 / .035);
+  --shadow-raised:0 6px 18px oklch(0% 0 0 / .065),0 1px 3px oklch(0% 0 0 / .035);
+  --shadow-floating:0 20px 48px oklch(0% 0 0 / .105),0 3px 10px oklch(0% 0 0 / .045);
+  --arc-gradient-from:oklch(90% .045 300);
+  --arc-gradient-to:oklch(92% .045 65);
+  --arc-gradient:linear-gradient(100deg,var(--arc-gradient-from),var(--arc-gradient-to));
+  --arc-gradient-foreground:oklch(22% .01 300);
+  --arc-gradient-soft:linear-gradient(135deg,oklch(97.5% .016 300),oklch(98% .016 65));
+  --arc-gradient-line:linear-gradient(100deg,oklch(83% .06 300),oklch(86% .06 65));
+  --arc-gradient-ink:linear-gradient(100deg,oklch(47% .1 300),oklch(50% .09 55));
+  --radius-control:1.125rem; --radius-panel:1.625rem; --radius-surface:2.125rem; --radius-pill:9999px;
+  --font-display:"Geist","IBM Plex Sans KR",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans KR","Geist",system-ui,sans-serif;
+  --ease-enter:cubic-bezier(.16,1,.3,1);
+  --ease-standard:cubic-bezier(.22,1,.36,1);
+  --ease-spring:linear(0,.0258,.09,.1763,.2732,.3724,.4683,.5573,.6376,.7082,.7689,.8202,.8628,.8976,.9256,.9476,.9648,.9778,.9875,.9945,.9994,1.0026,1.0047,1.0058,1.0062,1.0062,1.0059,1.0055,1.0049,1.0043,1.0036,1.0031,1.0025,1.002,1.0016,1.0013,1);
+  --duration-fast:160ms; --duration-standard:240ms; --duration-considered:480ms; --duration-spring:580ms;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --background:oklch(19% 0 0); --surface:oklch(21.5% 0 0); --surface-muted:oklch(26% 0 0); --surface-sunk:oklch(17.5% 0 0);
+    --foreground:oklch(96% 0 0); --text-secondary:oklch(77% 0 0); --text-muted:oklch(64% 0 0);
+    --border:oklch(29% 0 0); --border-subtle:oklch(25% 0 0); --border-strong:oklch(40% 0 0);
+    --accent:#a78bff; --accent-strong:#c7b7ff; --accent-subtle:rgb(119 71 255 / .22);
+    --control-on:oklch(93% 0 0); --control-glyph:oklch(19% 0 0); --control-track:oklch(33% 0 0);
+    --success:oklch(78% .18 150); --warning:oklch(83% .17 80);
+    --shadow-resting:0 1px 2px oklch(0% 0 0 / .18); --shadow-raised:0 8px 22px oklch(0% 0 0 / .22); --shadow-floating:0 22px 55px oklch(0% 0 0 / .34);
+    --arc-gradient-from:oklch(38% .05 300); --arc-gradient-to:oklch(40% .045 60);
+    --arc-gradient-foreground:oklch(96% .005 300);
+    --arc-gradient-soft:linear-gradient(135deg,oklch(23.5% .016 300),oklch(24% .014 65));
+    --arc-gradient-line:linear-gradient(100deg,oklch(48% .06 300),oklch(52% .055 65));
+    --arc-gradient-ink:linear-gradient(100deg,oklch(82% .07 300),oklch(86% .065 70));
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --background:oklch(19% 0 0); --surface:oklch(21.5% 0 0); --surface-muted:oklch(26% 0 0); --surface-sunk:oklch(17.5% 0 0);
+  --foreground:oklch(96% 0 0); --text-secondary:oklch(77% 0 0); --text-muted:oklch(64% 0 0);
+  --border:oklch(29% 0 0); --border-subtle:oklch(25% 0 0); --border-strong:oklch(40% 0 0);
+  --accent:#a78bff; --accent-strong:#c7b7ff; --accent-subtle:rgb(119 71 255 / .22);
+  --control-on:oklch(93% 0 0); --control-glyph:oklch(19% 0 0); --control-track:oklch(33% 0 0);
+  --success:oklch(78% .18 150); --warning:oklch(83% .17 80);
+  --shadow-resting:0 1px 2px oklch(0% 0 0 / .18); --shadow-raised:0 8px 22px oklch(0% 0 0 / .22); --shadow-floating:0 22px 55px oklch(0% 0 0 / .34);
+  --arc-gradient-from:oklch(38% .05 300); --arc-gradient-to:oklch(40% .045 60);
+  --arc-gradient-foreground:oklch(96% .005 300);
+  --arc-gradient-soft:linear-gradient(135deg,oklch(23.5% .016 300),oklch(24% .014 65));
+  --arc-gradient-line:linear-gradient(100deg,oklch(48% .06 300),oklch(52% .055 65));
+  --arc-gradient-ink:linear-gradient(100deg,oklch(82% .07 300),oklch(86% .065 70));
+}
+
+*,*::before,*::after{box-sizing:border-box}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--background);color:var(--foreground);font-family:var(--font-body);font-size:15px;line-height:1.55;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:10px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Shell ---------- */
+.shell{max-width:1240px;margin:0 auto;padding:0 clamp(16px,3vw,32px) 64px}
+.top{display:flex;align-items:center;gap:12px;padding:18px 0 14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in oklab,var(--background) 94%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.mark{width:30px;height:30px;border-radius:10px;background:var(--arc-gradient);display:grid;place-items:center;flex:none}
+.mark svg{width:16px;height:16px;color:var(--arc-gradient-foreground)}
+.brand{font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-.02em;white-space:nowrap}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+.search{position:relative}
+.search input{height:38px;width:min(260px,40vw);border:1px solid var(--border);background:var(--surface);border-radius:var(--radius-pill);padding:0 40px 0 36px;font-size:14px;transition:border-color var(--duration-fast) var(--ease-standard)}
+.search input::placeholder{color:var(--text-muted)}
+.search input:hover{border-color:var(--border-strong)}
+.search > svg{position:absolute;left:12px;top:50%;width:15px;height:15px;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
+.kbd{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text-muted);border:1px solid var(--border);border-radius:6px;padding:0 6px;line-height:18px;background:var(--surface-muted)}
+.icon-btn{width:38px;height:38px;border-radius:var(--radius-pill);border:1px solid var(--border);background:var(--surface);display:grid;place-items:center;transition:background var(--duration-fast)}
+.icon-btn:hover{background:var(--surface-muted)}
+.icon-btn svg{width:16px;height:16px}
+
+/* ---------- Intro + variables ---------- */
+.intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,2vw,24px);align-items:start;padding:28px 0 28px}
+.intro > div:first-child{padding-right:clamp(0px,3vw,40px)}
+.intro h1{font-family:var(--font-display);font-weight:600;font-size:clamp(30px,4.6vw,48px);line-height:1.08;letter-spacing:-.035em;margin:0 0 14px;text-wrap:balance}
+.intro p{margin:0;color:var(--text-secondary);max-width:44ch;font-size:15.5px}
+.vars{background:var(--surface-muted);border-radius:var(--radius-surface);padding:18px;display:grid;grid-template-columns:1.6fr 1fr;gap:10px}
+.vars-head{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;padding:0 6px 2px}
+.vars-head strong{font-family:var(--font-display);font-weight:600;font-size:14px}
+.vars-head span{font-size:12.5px;color:var(--text-muted)}
+.field{display:flex;flex-direction:column;gap:4px;background:var(--surface);border-radius:var(--radius-control);padding:9px 14px 10px;border:1px solid transparent;transition:border-color var(--duration-fast),box-shadow var(--duration-fast)}
+.field:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-subtle)}
+.field label{font-size:12px;color:var(--text-secondary);font-weight:500}
+.field input{border:0;background:transparent;padding:0;font-size:15px;outline:none;min-width:0}
+.field input::placeholder{color:var(--text-muted)}
+.field.wide{grid-column:1/-1}
+.years{display:flex;align-items:center;gap:6px}
+.years input{width:100%}
+.years span{color:var(--text-muted);white-space:nowrap;flex:none;font-size:14px}
+.field.flash{animation:flash var(--duration-considered) var(--ease-standard)}
+@keyframes flash{0%{box-shadow:0 0 0 0 var(--accent-subtle);border-color:var(--accent)}100%{box-shadow:0 0 0 8px transparent}}
+
+/* ---------- Workflow rail ---------- */
+.flow{margin:0 0 28px}
+.flow-head{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
+.flow-head h2{font-family:var(--font-display);font-size:16px;font-weight:600;margin:0;letter-spacing:-.02em}
+.flow-head p{margin:0;font-size:13px;color:var(--text-muted)}
+.rail{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--n,7),minmax(0,1fr));gap:0;position:relative;overflow-x:auto;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail li{position:relative;min-width:120px}
+.rail li::before{content:"";position:absolute;top:15px;left:0;right:0;height:2px;background:var(--border)}
+.rail li:first-child::before{left:50%}
+.rail li:last-child::before{right:50%}
+.rail li.done::before{background:var(--arc-gradient-line)}
+.stage{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;background:none;border:0;padding:0 6px 4px;text-align:center}
+.dot{position:relative;z-index:1;width:32px;height:32px;border-radius:50%;background:var(--surface);border:1.5px solid var(--border-strong);display:grid;place-items:center;font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text-secondary);transition:transform var(--duration-spring) var(--ease-spring),background var(--duration-standard),border-color var(--duration-standard),color var(--duration-standard)}
+.stage:hover .dot{transform:scale(1.08)}
+.stage-name{font-size:13px;font-weight:600;line-height:1.25}
+.stage-ids{font-size:12px;color:var(--text-muted)}
+li.done .dot{background:var(--arc-gradient);border-color:transparent;color:var(--arc-gradient-foreground)}
+li.current .dot{border-color:var(--accent);color:var(--accent-strong);box-shadow:0 0 0 5px var(--accent-subtle)}
+li.current .stage-name{color:var(--accent-strong)}
+
+/* ---------- Main layout ---------- */
+.main{display:grid;grid-template-columns:340px minmax(0,1fr);gap:24px;align-items:start}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 96px)}
+.seg{display:flex;background:var(--surface-muted);border-radius:var(--radius-pill);padding:4px;position:relative}
+.seg button{flex:1;position:relative;z-index:1;border:0;background:none;height:32px;border-radius:var(--radius-pill);font-size:13px;font-weight:500;color:var(--text-secondary);white-space:nowrap;transition:color var(--duration-standard)}
+.seg button[aria-pressed="true"]{color:var(--foreground)}
+.seg .thumb{position:absolute;top:4px;bottom:4px;left:4px;border-radius:var(--radius-pill);background:var(--surface);box-shadow:var(--shadow-resting),0 0 0 .5px var(--border);transition:transform var(--duration-spring) var(--ease-spring),width var(--duration-spring) var(--ease-spring)}
+.list{list-style:none;margin:0;padding:4px;overflow:auto;border-radius:var(--radius-panel);border:1px solid var(--border);background:var(--surface);scrollbar-width:thin}
+.item{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:start;width:100%;text-align:left;border:0;background:none;padding:11px 12px;border-radius:var(--radius-control);transition:background var(--duration-fast)}
+.item:hover{background:var(--surface-muted)}
+.item[aria-current="true"]{background:var(--accent-subtle)}
+.item-no{font-family:var(--font-display);font-weight:600;font-size:13px;color:var(--text-muted);padding-top:1px;font-variant-numeric:tabular-nums}
+.item[aria-current="true"] .item-no{color:var(--accent-strong)}
+.item-title{font-weight:600;font-size:14px;line-height:1.35;display:block}
+.item-out{font-size:12.5px;color:var(--text-secondary);display:block;margin-top:2px;line-height:1.4}
+.used{width:18px;height:18px;border-radius:50%;background:var(--arc-gradient);display:grid;place-items:center;margin-top:1px;opacity:0;transform:scale(.6);transition:opacity var(--duration-standard),transform var(--duration-spring) var(--ease-spring)}
+.used.on{opacity:1;transform:scale(1)}
+.used svg{width:10px;height:10px;color:var(--arc-gradient-foreground)}
+.empty{padding:28px 16px;text-align:center;color:var(--text-secondary);font-size:14px}
+.empty button{margin-top:10px;border:1px solid var(--border);background:var(--surface);border-radius:var(--radius-pill);height:34px;padding:0 14px;font-size:13px}
+.hint{font-size:12px;color:var(--text-muted);padding:0 8px}
+
+/* ---------- Workspace ---------- */
+.work{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-surface);box-shadow:var(--shadow-raised);overflow:hidden;overflow:clip}
+.work-head{padding:26px clamp(20px,3vw,34px) 20px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 20px;align-items:start}
+.work-no{font-family:var(--font-display);font-weight:700;font-size:56px;line-height:.9;letter-spacing:-.05em;background:var(--arc-gradient-ink);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:10px;font-variant-numeric:tabular-nums}
+.work-title{font-family:var(--font-display);font-size:clamp(22px,2.6vw,28px);font-weight:600;letter-spacing:-.03em;line-height:1.2;margin:0}
+.work-en{color:var(--text-muted);font-size:13.5px;margin-top:4px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:var(--radius-pill);background:var(--surface-muted);font-size:12.5px;font-weight:500;color:var(--text-secondary);white-space:nowrap}
+.badge i{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.7}
+.facts{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.fact{background:var(--surface-sunk);border:1px solid var(--border-subtle);border-radius:var(--radius-control);padding:12px 14px}
+.fact b{display:block;font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:3px}
+.fact span{font-size:14px;line-height:1.5}
+
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px clamp(20px,3vw,34px);border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);background:var(--surface-sunk)}
+.lang{display:flex;background:var(--surface-muted);border-radius:var(--radius-pill);padding:3px}
+.lang button{border:0;background:none;height:28px;padding:0 12px;border-radius:var(--radius-pill);font-size:12.5px;font-weight:500;color:var(--text-secondary);transition:background var(--duration-standard),color var(--duration-standard)}
+.lang button[aria-pressed="true"]{background:var(--surface);color:var(--foreground);box-shadow:var(--shadow-resting),0 0 0 .5px var(--border)}
+.toggle{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);cursor:pointer;user-select:none;padding:4px 6px;border-radius:10px}
+.toggle input{position:absolute;opacity:0;pointer-events:none}
+.sw{width:30px;height:18px;border-radius:9px;background:var(--control-track);position:relative;flex:none;transition:background var(--duration-standard)}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px oklch(0% 0 0 / .2);transition:transform var(--duration-spring) var(--ease-spring)}
+.toggle input:checked + .sw{background:var(--control-on)}
+.toggle input:checked + .sw::after{transform:translateX(12px);background:var(--control-glyph)}
+.toggle input:focus-visible + .sw{outline:2px solid var(--accent);outline-offset:2px}
+.toggle:hover{color:var(--foreground)}
+
+.prompt-wrap{padding:22px clamp(20px,3vw,34px) 8px}
+.prompt{font-size:15.5px;line-height:1.85;margin:0;max-width:70ch;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.prompt .add{display:block;margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);color:var(--text-secondary)}
+.ph{display:inline;border:0;padding:1px 8px;margin:0 1px;border-radius:8px;font-size:.95em;font-weight:600;line-height:1.6;cursor:pointer;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background var(--duration-standard)}
+.ph.filled{background:var(--arc-gradient);color:var(--arc-gradient-foreground)}
+.ph.empty{background:transparent;color:var(--warning);box-shadow:inset 0 0 0 1.5px currentColor;font-weight:500}
+.ph:hover{filter:brightness(.97)}
+.ph.opt{background:var(--surface-muted);color:var(--text-secondary);font-weight:500}
+.ph.pop{animation:pop var(--duration-spring) var(--ease-spring)}
+@keyframes pop{0%{transform:scale(.92)}100%{transform:scale(1)}}
+
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:16px clamp(20px,3vw,34px) 26px}
+.copy{position:relative;height:48px;padding:0 22px 0 18px;border:0;border-radius:var(--radius-pill);background:var(--control-on);color:var(--control-glyph);font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:10px;overflow:hidden;transition:transform var(--duration-fast) var(--ease-standard),background var(--duration-standard)}
+.copy:hover{transform:translateY(-1px)}
+.copy:active{transform:scale(.98)}
+.copy svg{width:17px;height:17px}
+.copy .lbl{display:inline-grid;white-space:nowrap}
+.copy .lbl span{grid-area:1/1;transition:opacity var(--duration-standard),transform var(--duration-spring) var(--ease-spring)}
+.copy .lbl .b{opacity:0;transform:translateY(100%)}
+.copy.done{background:var(--arc-gradient);color:var(--arc-gradient-foreground)}
+.copy.done .lbl .a{opacity:0;transform:translateY(-100%)}
+.copy.done .lbl .b{opacity:1;transform:none}
+.copy .ic-b{display:none}
+.copy.done .ic-a{display:none}
+.copy.done .ic-b{display:block}
+.ghost{height:48px;max-width:100%;padding:0 18px;border-radius:var(--radius-pill);border:1px solid var(--border);background:var(--surface);font-weight:500;font-size:14px;display:inline-flex;align-items:center;gap:8px;transition:background var(--duration-fast)}
+.ghost:hover{background:var(--surface-muted)}
+.ghost svg{width:15px;height:15px}
+.status{font-size:13px;color:var(--text-secondary);flex-basis:100%;min-height:20px}
+.status.warn{color:var(--warning)}
+
+.tips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:40px;padding-top:24px;border-top:1px solid var(--border)}
+.tips h3{font-family:var(--font-display);font-size:14px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em}
+.tips p{margin:0;font-size:13.5px;color:var(--text-secondary);line-height:1.6}
+.credit{margin-top:28px;font-size:12px;color:var(--text-muted)}
+.credit a{color:inherit}
+
+.back{display:none}
+
+@media (max-width:960px){
+  .intro{grid-template-columns:1fr;align-items:start;padding-top:12px}
+  .main{grid-template-columns:1fr}
+  .side{position:static;max-height:none}
+  .list{max-height:none}
+  .tips{grid-template-columns:1fr}
+  .back{display:inline-flex}
+  .rail{grid-template-columns:repeat(var(--n,7),120px)}
+}
+@media (max-width:560px){
+  .brand{display:none}
+  .search input{width:100%}
+  .search{flex:1}
+  .top-actions{flex:1}
+  .vars{grid-template-columns:1fr;padding:12px;border-radius:var(--radius-panel)}
+  .facts{grid-template-columns:1fr}
+  .work{border-radius:var(--radius-panel)}
+  .work-no{font-size:44px}
+  .seg button{font-size:12px}
+  .kbd{display:none}
+  .copy{flex:1 1 100%;justify-content:center}
+  .ghost{flex:1 1 auto;justify-content:center;min-width:0}
+  #next-lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:1ms!important}
+}
+
+/* ---------- v2: modes, idea refine, grouped list ---------- */
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,24px);margin:18px 0 0}
+.mode-btn{display:flex;align-items:center;gap:14px;text-align:left;padding:14px 18px;border-radius:var(--radius-panel);border:1px solid var(--border);background:var(--surface);transition:border-color var(--duration-standard),box-shadow var(--duration-standard),background var(--duration-standard)}
+.mode-btn:hover{background:var(--surface-muted)}
+.mode-btn[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-subtle);background:var(--surface)}
+.mode-ic{width:38px;height:38px;border-radius:12px;background:var(--surface-muted);display:grid;place-items:center;flex:none;transition:background var(--duration-standard)}
+.mode-btn[aria-pressed="true"] .mode-ic{background:var(--arc-gradient);color:var(--arc-gradient-foreground)}
+.mode-ic svg{width:18px;height:18px}
+.mode-btn b{display:block;font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-.02em}
+.mode-btn small{display:block;font-size:12.5px;color:var(--text-secondary);margin-top:1px}
+body[data-mode="paper"] .only-idea, body[data-mode="idea"] .only-paper{display:none!important}
+.field textarea{border:0;background:transparent;padding:0;font:inherit;font-size:15px;line-height:1.5;resize:vertical;min-height:66px;outline:none;color:inherit}
+.field textarea::placeholder{color:var(--text-muted)}
+.refine-row{grid-column:1/-1;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:4px 4px 0}
+.refine-btn{height:40px;padding:0 16px 0 14px;border:0;border-radius:var(--radius-pill);background:var(--control-on);color:var(--control-glyph);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px;transition:transform var(--duration-fast)}
+.refine-btn:hover{transform:translateY(-1px)}
+.refine-btn:disabled{opacity:.5;cursor:default;transform:none}
+.refine-btn svg{width:15px;height:15px}
+.refine-note{font-size:12.5px;color:var(--text-muted);flex:1;min-width:200px}
+.refine{margin:0 0 28px;border-radius:var(--radius-surface);background:var(--arc-gradient-soft);border:1px solid var(--border-subtle);padding:22px clamp(18px,3vw,30px)}
+.refine[hidden]{display:none}
+.refine-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.refine-top h2{font-family:var(--font-display);font-size:17px;font-weight:600;letter-spacing:-.02em;margin:0}
+.refine-top p{margin:2px 0 0;font-size:13.5px;color:var(--text-secondary)}
+.refine-top .ghost{margin-left:auto;height:36px;padding:0 14px;font-size:13px}
+.thinking{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-secondary)}
+.thinking i{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 1.2s var(--ease-standard) infinite}
+@keyframes pulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.r-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
+.r-block h3{font-size:13px;font-weight:600;color:var(--text-secondary);margin:0 0 8px}
+.qs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.qs li{background:var(--surface);border-radius:var(--radius-control);padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:start;box-shadow:var(--shadow-resting)}
+.qs .q{font-weight:600;font-size:14.5px;line-height:1.45}
+.qs .meta{grid-column:1;font-size:12.5px;color:var(--text-secondary)}
+.qs .use{grid-row:1/3;grid-column:2;height:32px;padding:0 12px;border-radius:var(--radius-pill);border:1px solid var(--border);background:var(--surface);font-size:12.5px;font-weight:500;white-space:nowrap}
+.qs .use:hover{background:var(--surface-muted)}
+.qs .use.picked{background:var(--arc-gradient);color:var(--arc-gradient-foreground);border-color:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.chip{background:var(--surface);border-radius:var(--radius-pill);padding:4px 11px;font-size:13px;box-shadow:var(--shadow-resting)}
+.chip em{font-style:normal;color:var(--text-muted);margin-left:5px}
+.qry{background:var(--surface);border-radius:var(--radius-control);padding:10px 12px;margin-bottom:8px;box-shadow:var(--shadow-resting)}
+.qry b{display:block;font-size:12px;color:var(--text-secondary);margin-bottom:3px;font-weight:600}
+.qry code{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.55;word-break:break-all;white-space:pre-wrap}
+.qry button{float:right;border:0;background:none;color:var(--accent-strong);font-size:12px;font-weight:600;padding:0 2px}
+.risks{margin:0;padding-left:18px;font-size:13.5px;color:var(--text-secondary)}
+.risks li+li{margin-top:4px}
+.r-err{font-size:14px;color:var(--warning)}
+.group-head{list-style:none;display:flex;align-items:baseline;gap:8px;padding:12px 12px 4px;font-size:12px;font-weight:600;color:var(--text-muted)}
+.group-head:first-child{padding-top:6px}
+.group-head span{color:var(--text-secondary)}
+.side-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 8px}
+.sorter{display:flex;gap:2px;font-size:12px}
+.sorter button{border:0;background:none;padding:3px 8px;border-radius:var(--radius-pill);color:var(--text-muted);font-size:12px}
+.sorter button[aria-pressed="true"]{background:var(--surface-muted);color:var(--foreground);font-weight:600}
+.badges{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.badge.web{background:var(--accent-subtle);color:var(--accent-strong)}
+.badge.web svg{width:13px;height:13px}
+.toggle.locked{opacity:.55;cursor:default}
+@media (max-width:960px){.r-grid{grid-template-columns:1fr}}
+@media (max-width:560px){.modes{grid-template-columns:1fr}.mode-btn{padding:12px 14px}}
+
+/* ---------- v3: nav, run mode, step links, how-to ---------- */
+.nav{display:flex;gap:2px;margin-left:12px;background:var(--surface-muted);border-radius:var(--radius-pill);padding:3px}
+.nav a{height:30px;display:inline-flex;align-items:center;padding:0 13px;border-radius:var(--radius-pill);font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:background var(--duration-standard),color var(--duration-standard)}
+.nav a[aria-current="page"]{background:var(--surface);color:var(--foreground);box-shadow:var(--shadow-resting),0 0 0 .5px var(--border)}
+.flow-head{flex-wrap:wrap}
+.run{margin-left:auto;display:flex;align-items:center;gap:8px}
+.run-lbl{font-size:12.5px;color:var(--text-muted)}
+.run-desc{margin:-4px 0 14px;font-size:13px;color:var(--text-secondary);max-width:80ch}
+.links{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+.link-box{border:1px dashed var(--border-strong);border-radius:var(--radius-control);padding:10px 14px}
+.link-box b{display:block;font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:5px}
+.link-box .none{font-size:13.5px;color:var(--text-muted)}
+.link-box p{margin:0;font-size:14px}
+.take{display:flex;flex-wrap:wrap;gap:6px}
+.take button{display:inline-flex;align-items:center;gap:6px;border:0;background:var(--surface-muted);border-radius:var(--radius-pill);padding:4px 11px 4px 5px;font-size:13px;transition:background var(--duration-fast)}
+.take button:hover{background:var(--accent-subtle)}
+.take button i{font-style:normal;font-family:var(--font-display);font-weight:600;font-size:11.5px;min-width:22px;height:20px;border-radius:10px;background:var(--surface);display:grid;place-items:center;padding:0 5px}
+.take button.ok i{background:var(--arc-gradient);color:var(--arc-gradient-foreground)}
+.prev{padding:16px clamp(20px,3vw,34px) 0;display:flex;flex-direction:column;gap:8px}
+.prev-title{font-size:13px;font-weight:600;color:var(--text-secondary);margin:0}
+.prev details{border:1px solid var(--border);border-radius:var(--radius-control);background:var(--surface-sunk)}
+.prev summary{list-style:none;display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;font-size:14px}
+.prev summary::-webkit-details-marker{display:none}
+.prev summary .st{margin-left:auto;font-size:12.5px;color:var(--text-muted);white-space:nowrap}
+.prev summary .st.miss{color:var(--warning)}
+.prev summary svg{width:14px;height:14px;color:var(--text-muted);transition:transform var(--duration-standard) var(--ease-standard);flex:none}
+.prev details[open] summary svg{transform:rotate(90deg)}
+.prev textarea,.save textarea{display:block;width:100%;border:0;border-top:1px solid var(--border-subtle);background:transparent;padding:12px 14px;font:inherit;font-size:13.5px;line-height:1.6;resize:vertical;min-height:120px;color:inherit;outline:none}
+.prev .row-foot{display:flex;justify-content:flex-end;gap:6px;padding:0 10px 10px}
+.mini{height:28px;padding:0 11px;border-radius:var(--radius-pill);border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500}
+.mini:hover{background:var(--surface-muted)}
+.prompt .ctx{display:block;margin-bottom:14px;padding:10px 14px;border-radius:var(--radius-control);background:var(--surface-sunk);border:1px solid var(--border-subtle);font-size:14px;line-height:1.65;color:var(--text-secondary)}
+.prompt .ctx b{color:var(--foreground);font-weight:600}
+.save{margin:0 clamp(20px,3vw,34px) 26px;border:1px solid var(--border);border-radius:var(--radius-panel);background:var(--arc-gradient-soft);overflow:hidden}
+.save label{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:12px 16px 10px}
+.save label b{font-size:14px;font-weight:600}
+.save label span{font-size:12.5px;color:var(--text-secondary)}
+.save textarea{background:var(--surface);min-height:140px}
+.save-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px 10px 16px;font-size:12.5px;color:var(--text-secondary);background:var(--surface);border-top:1px solid var(--border-subtle)}
+
+.stepvars{margin:16px clamp(20px,3vw,34px) 0;padding:14px;border-radius:var(--radius-panel);background:var(--surface-muted)}
+.sv-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:0 4px 10px}
+.sv-head b{font-size:13.5px;font-weight:600}
+.sv-head span{font-size:12.5px;color:var(--text-secondary)}
+.sv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.more{grid-column:1/-1;background:var(--surface);border-radius:var(--radius-control);border:1px solid transparent}
+.more summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;font-size:14px}
+.more summary::-webkit-details-marker{display:none}
+.more summary b{font-weight:600}
+.more-sub{font-size:12.5px;color:var(--text-muted);margin-left:4px}
+.more-count{font-size:12.5px;color:var(--accent-strong);margin-left:auto}
+.more summary::after{content:"+";color:var(--text-muted);font-size:18px;line-height:1}
+.more[open] summary::after{content:"−"}
+.more-body{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 10px 12px}
+.more-body .field{background:var(--surface-muted)}
+.more-body .field.wide{grid-column:1/-1}
+.intro .more-note{grid-column:1/-1;margin:2px 4px 0;max-width:none;font-size:12.5px;color:var(--text-secondary);line-height:1.55}
+.method{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.method button{height:30px;padding:0 13px;border-radius:var(--radius-pill);border:1px solid var(--border);background:var(--surface);font-size:13px;color:var(--text-secondary);transition:background var(--duration-standard),color var(--duration-standard),border-color var(--duration-standard)}
+.method button[aria-pressed="true"]{background:var(--control-on);color:var(--control-glyph);border-color:transparent}
+@media (max-width:560px){.more-body{grid-template-columns:1fr}}
+.tb-btn{display:inline-flex;align-items:center;gap:6px;margin-left:auto}
+.tb-btn svg{width:13px;height:13px}
+#e-reset{margin-left:0}
+.edited{margin-left:auto;font-size:12px;font-weight:600;color:var(--accent-strong);background:var(--accent-subtle);border-radius:var(--radius-pill);padding:3px 10px}
+.edited:not([hidden]) + .tb-btn{margin-left:0}
+.editor{border:1px solid var(--accent);border-radius:var(--radius-control);box-shadow:0 0 0 4px var(--accent-subtle);overflow:hidden}
+.editor label{display:flex;flex-direction:column;gap:2px;padding:10px 14px}
+.editor label b{font-size:13.5px;font-weight:600}
+.editor label span{font-size:12.5px;color:var(--text-secondary)}
+.editor textarea{display:block;width:100%;border:0;border-top:1px solid var(--border-subtle);padding:12px 14px;font:inherit;font-size:15px;line-height:1.75;resize:vertical;min-height:220px;background:var(--surface);color:inherit;outline:none}
+.editor-foot{display:flex;align-items:center;gap:8px;padding:8px 12px;border-top:1px solid var(--border-subtle);background:var(--surface-sunk)}
+.editor-foot .muted{margin-right:auto;font-size:12.5px;color:var(--warning)}
+.mini.primary{background:var(--control-on);color:var(--control-glyph);border-color:transparent}
+a.mini{display:inline-flex;align-items:center;text-decoration:none;color:inherit}
+.save-btns{display:flex;gap:6px}
+.onboard{margin:18px 0 0;padding:16px 18px;border-radius:var(--radius-panel);background:var(--arc-gradient-soft);border:1px solid var(--border-subtle);display:flex;align-items:center;gap:16px}
+.onboard ol{list-style:none;counter-reset:o;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;flex:1}
+.onboard li{counter-increment:o;display:grid;grid-template-columns:26px minmax(0,1fr);gap:0 10px;align-items:start}
+.onboard li::before{content:counter(o);grid-row:1/3;width:24px;height:24px;border-radius:50%;background:var(--arc-gradient);color:var(--arc-gradient-foreground);display:grid;place-items:center;font-family:var(--font-display);font-weight:600;font-size:12px}
+.onboard b{font-size:14px;font-weight:600;line-height:1.5}
+.onboard span{font-size:12.5px;color:var(--text-secondary);line-height:1.5}
+.ob-actions{display:flex;flex-direction:column;gap:6px;flex:none}
+@media (max-width:960px){.onboard{flex-direction:column;align-items:stretch}.onboard ol{grid-template-columns:1fr}.ob-actions{flex-direction:row}}
+@media (max-width:560px){
+ .actions{position:sticky;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--border-subtle);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));gap:8px;flex-wrap:wrap}
+ .actions .copy{flex:1.4 1 0;min-width:0;height:44px;padding:0 14px;white-space:nowrap}
+ .actions #next{flex:1 1 0;min-width:0;height:44px;padding:0 12px}
+ .actions #back{flex:none;width:44px;height:44px;padding:0;justify-content:center}
+ .back-txt{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+ .actions .status{order:-1;min-height:0;font-size:12.5px}
+ .actions .status:empty{display:none}
+ .tb-btn{margin-left:0}
+}
+.refine-row .tb-btn{margin-left:0}
+.raw{white-space:pre-wrap;background:var(--surface);border-radius:var(--radius-control);padding:14px 16px;font-size:14px;line-height:1.7;max-height:420px;overflow:auto;box-shadow:var(--shadow-resting)}
+.ai-dlg{border:0;padding:0;border-radius:var(--radius-surface);background:var(--surface);color:var(--foreground);box-shadow:var(--shadow-floating);width:min(560px,calc(100vw - 24px));max-height:calc(100vh - 40px)}
+.ai-dlg::backdrop{background:oklch(0% 0 0 / .35);backdrop-filter:blur(2px)}
+.ai-form{display:flex;flex-direction:column;gap:12px;padding:22px}
+.ai-head h2{font-family:var(--font-display);font-size:20px;font-weight:600;letter-spacing:-.02em;margin:0 0 4px}
+.ai-head p{margin:0;font-size:13.5px;color:var(--text-secondary)}
+.ai-kind{align-self:flex-start}
+.ai-fields{display:flex;flex-direction:column;gap:8px}
+.ai-fields .field{background:var(--surface-muted)}
+.ai-fields .field input{font-family:inherit}
+.ai-presets{display:flex;flex-wrap:wrap;gap:6px}
+.ai-warn,.ai-copy-note{margin:0;font-size:12.5px;color:var(--text-secondary);line-height:1.55}
+.ai-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:4px}
+.ai-foot #ai-state{flex:1 1 200px;font-size:12.5px;color:var(--text-secondary);line-height:1.5}
+/* how-to page */
+.how{max-width:860px;padding:28px 0 8px}
+.how h1{font-family:var(--font-display);font-weight:600;font-size:clamp(30px,4.4vw,44px);line-height:1.1;letter-spacing:-.035em;margin:0 0 14px;text-wrap:balance}
+.how .lead{font-size:16px;color:var(--text-secondary);margin:0 0 22px;max-width:62ch}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 36px;padding:0;list-style:none}
+.toc a{display:inline-flex;height:32px;align-items:center;padding:0 13px;border-radius:var(--radius-pill);background:var(--surface-muted);font-size:13px;color:var(--text-secondary);text-decoration:none}
+.toc a:hover{color:var(--foreground)}
+.how section{padding:30px 0;border-top:1px solid var(--border)}
+.how h2{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-.025em;margin:0 0 6px}
+.how h2 + p{margin-top:0}
+.how p,.how li{font-size:15px;line-height:1.75;color:var(--foreground)}
+.how p{max-width:68ch}
+.how .muted{color:var(--text-secondary)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.pair > div{border-radius:var(--radius-panel);padding:18px 20px;background:var(--surface-muted)}
+.pair h3{font-family:var(--font-display);font-size:16px;font-weight:600;margin:0 0 6px;letter-spacing:-.02em}
+.pair p{font-size:14px;margin:0 0 8px;color:var(--text-secondary)}
+.pair ul{margin:0;padding-left:18px}
+.pair li{font-size:14px;line-height:1.65}
+.steps{list-style:none;counter-reset:s;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 14px;padding:12px 0}
+.steps li::before{content:counter(s);grid-row:1/3;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border-strong);display:grid;place-items:center;font-family:var(--font-display);font-weight:600;font-size:13px;color:var(--text-secondary)}
+.steps b{font-weight:600;font-size:15px}
+.steps span{font-size:14px;color:var(--text-secondary);line-height:1.65}
+.tbl{overflow-x:auto;margin-top:14px;border:1px solid var(--border);border-radius:var(--radius-panel)}
+.tbl table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+.tbl th,.tbl td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border-subtle);vertical-align:top;line-height:1.5}
+.tbl th{font-weight:600;color:var(--text-secondary);font-size:12.5px;background:var(--surface-sunk)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td:first-child{white-space:nowrap;font-weight:600}
+.tbl td:first-child em{font-style:normal;font-family:var(--font-display);color:var(--text-muted);margin-right:6px}
+.tbl .grp td{background:var(--surface-sunk);font-size:12px;color:var(--text-muted);font-weight:600;padding:6px 14px}
+.tabs-mini{display:flex;gap:6px;margin-top:14px}
+.how details{border-bottom:1px solid var(--border-subtle)}
+.how summary{cursor:pointer;padding:14px 0;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.how summary::-webkit-details-marker{display:none}
+.how summary::after{content:"+";color:var(--text-muted);font-weight:400;font-size:18px;line-height:1}
+.how details[open] summary::after{content:"−"}
+.how details p{margin:0 0 16px;color:var(--text-secondary);font-size:14.5px}
+.data-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+.data-actions .ghost{height:42px}
+.danger{color:var(--warning)}
+@media (max-width:960px){.links{grid-template-columns:1fr}}
+@media (max-width:640px){.pair{grid-template-columns:1fr}.run{margin-left:0;width:100%}.run .lang{flex:1}.run .lang button{flex:1}.nav{margin-left:0}}
+</style>
+</head>
+<body data-mode="paper">
+<div class="shell">
+  <header class="top">
+    <div class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 19c2-8 5-12 7-12s5 4 7 12"/></svg></div>
+    <span class="brand">선행연구 길잡이</span>
+    <nav class="nav" aria-label="화면"><a href="#" data-view="guide" aria-current="page">프롬프트</a><a href="#how" data-view="how">사용 방법</a></nav>
+    <div class="top-actions">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label class="sr" for="q">프롬프트 검색</label>
+        <input id="q" type="search" placeholder="모순, 갭, 검색식…" autocomplete="off">
+        <span class="kbd" aria-hidden="true">/</span>
+      </div>
+      <button class="icon-btn" id="theme" aria-label="테마 바꾸기" title="테마 바꾸기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <dialog class="ai-dlg" id="ai-dlg" aria-labelledby="ai-h">
+  <form method="dialog" class="ai-form" id="ai-form" autocomplete="off">
+    <div class="ai-head"><h2 id="ai-h">AI 연결</h2><p>'AI로 다듬기'에 쓸 AI를 고르세요. 설정은 이 브라우저에만 저장돼요.</p></div>
+    <div class="lang ai-kind" role="group" aria-label="연결 방식">
+      <button type="button" data-kind="copy" aria-pressed="true">연결 안 함 (복사만)</button>
+      <button type="button" data-kind="openai" aria-pressed="false">OpenAI 호환 API</button>
+    </div>
+    <div class="ai-fields" id="ai-fields">
+      <div class="ai-presets" id="ai-presets"></div>
+      <div class="field"><label for="ai-base">주소 (Base URL)</label><input id="ai-base" placeholder="예: http://localhost:11434/v1" spellcheck="false"></div>
+      <div class="field"><label for="ai-model">모델</label><input id="ai-model" placeholder="예: qwen3:14b" spellcheck="false"></div>
+      <div class="field"><label for="ai-key">API 키 (필요할 때만)</label><input id="ai-key" type="password" placeholder="로컬 서버는 보통 비워 둡니다" spellcheck="false"></div>
+      <p class="ai-warn">API 키는 이 브라우저에 저장됩니다. 여러 사람이 쓰는 배포라면 키를 서버에 두는 AI 라우터 주소를 넣으세요.</p>
+    </div>
+    <p class="ai-copy-note" id="ai-copy-note">'다듬기 프롬프트 복사'를 누르면 프롬프트가 복사돼요. ChatGPT, Gemini, 로컬 AI 화면 등 쓰는 곳에 붙여넣으면 됩니다.</p>
+    <div class="ai-foot"><span id="ai-state" role="status"></span><button type="button" class="mini" id="ai-test">연결 테스트</button><button type="button" class="mini" id="ai-cancel">취소</button><button type="button" class="mini primary" id="ai-save">저장</button></div>
+  </form>
+</dialog>
+<main id="view-guide">
+  <section class="onboard" id="onboard" hidden aria-label="처음 사용 안내">
+    <ol>
+      <li><b>출발점을 고르세요</b><span>논문이 없으면 '아이디어만 있어요', 있으면 '논문을 모았어요'.</span></li>
+      <li><b>주제와 분야를 적으세요</b><span>모든 프롬프트에 자동으로 채워집니다.</span></li>
+      <li><b>단계별로 복사해 붙여넣으세요</b><span>추천 순서를 따라 AI 대화창에 붙여넣으면 됩니다.</span></li>
+    </ol>
+    <div class="ob-actions"><a class="mini" href="#how" data-ob-close>사용 방법 자세히</a><button class="mini" type="button" data-ob-close>시작하기</button></div>
+  </section>
+  <div class="modes" role="group" aria-label="시작 지점">
+    <button class="mode-btn" data-mode="idea" aria-pressed="false">
+      <span class="mode-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg></span>
+      <span><b>아이디어만 있어요</b><small>사전 조사부터 읽을 논문 목록까지</small></span>
+    </button>
+    <button class="mode-btn" data-mode="paper" aria-pressed="true">
+      <span class="mode-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></span>
+      <span><b>논문을 모았어요</b><small>업로드한 논문을 15가지로 분석</small></span>
+    </button>
+  </div>
+
+  <section class="intro">
+    <div>
+      <h1 class="only-paper">논문 더미를 연구 질문으로 바꾸는 15개의 프롬프트</h1>
+      <p class="only-paper">주제와 분야를 한 번만 적어 두면 모든 프롬프트에 채워집니다. 특정 단계에만 필요한 정보는 그 단계에서 물어봐요. 논문을 AI에 올린 뒤, 필요한 프롬프트를 골라 복사해 붙여넣으세요.</p>
+      <h1 class="only-idea">막연한 아이디어에서 읽을 논문 목록까지</h1>
+      <p class="only-idea">아이디어를 적고 AI로 먼저 다듬어 보세요. 그다음 단계별 프롬프트를 웹 검색이 켜진 대화에 붙여넣으면 선행연구 조사까지 이어집니다.</p>
+    </div>
+
+    <form class="vars only-paper" autocomplete="off" onsubmit="return false">
+      <div class="vars-head"><strong>내 연구 정보</strong><span>이 브라우저에만 저장돼요</span></div>
+      <div class="field wide"><label for="v-TOPIC">주제</label><input id="v-TOPIC" data-var="TOPIC" placeholder="예: 원격근무와 신입 연구원의 직무 몰입"></div>
+      <div class="field wide"><label for="v-FIELD">분야</label><input id="v-FIELD" data-var="FIELD" placeholder="예: 조직행동론"></div>
+      <details class="more" data-more>
+        <summary><span><b>결과를 더 정확하게</b> <span class="more-sub">선택 사항</span></span><span class="more-count" data-more-count></span></summary>
+        <div class="more-body">
+          <div class="field"><label>연구 목적</label><input data-var="PURPOSE" aria-label="연구 목적" placeholder="예: 박사학위논문, 학술지 투고"></div>
+          <div class="field"><label>연구 맥락</label><input data-var="CONTEXT" aria-label="연구 맥락" placeholder="예: 국내 공공기관, 대학생"></div>
+          <div class="field wide"><label>선호하는 방법론</label>
+            <div class="method" role="group" aria-label="선호하는 방법론"><button type="button" data-m="">정하지 않음</button><button type="button" data-m="quant">양적</button><button type="button" data-m="qual">질적</button><button type="button" data-m="mixed">혼합</button></div>
+          </div>
+          <p class="more-note">적어 두면 갭, 연구 질문, 연구 설계, 실현 가능성을 다루는 단계에서 이 조건에 맞춰 제안합니다. 논문 내용을 정리하는 단계에는 넣지 않아요.</p>
+        </div>
+      </details>
+    </form>
+
+    <form class="vars only-idea" autocomplete="off" onsubmit="return false">
+      <div class="vars-head"><strong>내 아이디어</strong><span>이 브라우저에만 저장돼요</span></div>
+      <div class="field wide"><label for="v-IDEA">연구 아이디어</label><textarea id="v-IDEA" data-var="IDEA" rows="2" placeholder="예: 원격근무가 신입 연구원의 학습과 적응에 어떤 영향을 줄까?"></textarea></div>
+      <div class="field wide"><label for="v-FIELD2">분야</label><input id="v-FIELD2" data-var="FIELD" placeholder="예: 조직행동론"></div>
+      <details class="more" data-more>
+        <summary><span><b>결과를 더 정확하게</b> <span class="more-sub">선택 사항</span></span><span class="more-count" data-more-count></span></summary>
+        <div class="more-body">
+          <div class="field"><label>연구 목적</label><input data-var="PURPOSE" aria-label="연구 목적" placeholder="예: 박사학위논문, 학술지 투고"></div>
+          <div class="field"><label>연구 맥락</label><input data-var="CONTEXT" aria-label="연구 맥락" placeholder="예: 국내 공공기관, 대학생"></div>
+          <div class="field wide"><label>선호하는 방법론</label>
+            <div class="method" role="group" aria-label="선호하는 방법론"><button type="button" data-m="">정하지 않음</button><button type="button" data-m="quant">양적</button><button type="button" data-m="qual">질적</button><button type="button" data-m="mixed">혼합</button></div>
+          </div>
+          <p class="more-note">적어 두면 갭, 연구 질문, 연구 설계, 실현 가능성을 다루는 단계에서 이 조건에 맞춰 제안합니다. 논문 내용을 정리하는 단계에는 넣지 않아요.</p>
+        </div>
+      </details>
+    <div class="refine-row">
+        <button class="refine-btn" id="refine-go" type="button" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+          <span id="refine-lbl">AI로 다듬기</span>
+        </button>
+        <button class="mini" id="refine-copy" type="button" hidden>다른 AI에서 쓰기</button>
+        <button class="mini tb-btn" id="ai-open" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>AI 연결</button>
+        <span class="refine-note" id="refine-note">아이디어를 적으면 단계별 프롬프트에 채워집니다.</span>
+      </div>
+    </form>
+  </section>
+
+  <section class="refine only-idea" id="refine" hidden aria-live="polite"></section>
+
+  <section class="flow" aria-labelledby="flow-h">
+    <div class="flow-head"><h2 id="flow-h">추천 순서</h2><p>단계를 누르면 해당 프롬프트가 열려요. 복사한 단계는 채워집니다.</p>
+      <div class="run" role="group" aria-label="진행 방식">
+        <span class="run-lbl">진행 방식</span>
+        <div class="lang" id="run">
+          <button data-run="same" aria-pressed="true">한 대화에서 이어서</button>
+          <button data-run="split" aria-pressed="false">대화를 나눠서</button>
+        </div>
+      </div>
+    </div>
+    <p class="run-desc" id="run-desc"></p>
+    <ol class="rail" id="rail"></ol>
+  </section>
+
+  <div class="main">
+    <aside class="side" aria-label="프롬프트 목록">
+      <div class="seg only-paper" id="seg" role="group" aria-label="용도별 보기">
+        <span class="thumb" aria-hidden="true"></span>
+        <button data-cat="all" aria-pressed="true">전체</button>
+        <button data-cat="map" aria-pressed="false">파악</button>
+        <button data-cat="diag" aria-pressed="false">진단</button>
+        <button data-cat="idea" aria-pressed="false">아이디어</button>
+        <button data-cat="plan" aria-pressed="false">설계</button>
+      </div>
+      <ul class="list" id="list"></ul>
+      <div class="side-foot">
+        <span class="hint">↑ ↓ 로 이동, / 로 검색</span>
+        <div class="sorter" role="group" aria-label="정렬">
+          <button data-sort="flow" aria-pressed="true">추천순</button>
+          <button data-sort="id" aria-pressed="false">번호순</button>
+        </div>
+      </div>
+    </aside>
+
+    <article class="work" id="work" aria-live="polite">
+      <div class="work-head">
+        <div>
+          <div class="work-no" id="w-no">01</div>
+          <h2 class="work-title" id="w-title"></h2>
+          <div class="work-en" id="w-en"></div>
+        </div>
+        <div class="badges">
+          <span class="badge" id="w-cat"><i></i><span></span></span>
+          <span class="badge web" id="w-web" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>웹 검색 필요</span>
+        </div>
+        <div class="facts">
+          <div class="fact"><b>받게 되는 결과</b><span id="w-out"></span></div>
+          <div class="fact"><b>이럴 때 쓰세요</b><span id="w-when"></span></div>
+        </div>
+        <div class="links" id="w-links"></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="lang" role="group" aria-label="프롬프트 언어">
+          <button data-lang="ko" aria-pressed="true">한국어</button>
+          <button data-lang="en" aria-pressed="false">English</button>
+        </div>
+        <label class="toggle" id="o-ground-wrap"><input type="checkbox" id="o-ground" checked><span class="sw"></span><span id="o-ground-lbl">근거 없는 내용 금지</span></label>
+        <label class="toggle" id="o-cite-wrap"><input type="checkbox" id="o-cite"><span class="sw"></span>(저자, 연도) 인용</label>
+        <label class="toggle" id="o-ko-wrap"><input type="checkbox" id="o-ko" checked><span class="sw"></span>한국어로 답변</label>
+        <span class="edited" id="w-edited" hidden>수정됨</span>
+        <button class="mini tb-btn" id="e-open" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>프롬프트 수정</button>
+        <button class="mini tb-btn" id="e-reset" type="button" hidden>원래대로</button>
+      </div>
+
+      <div class="stepvars" id="w-vars" hidden></div>
+      <div class="prev" id="w-prev" hidden></div>
+      <div class="prompt-wrap">
+        <p class="prompt" id="w-prompt"></p>
+        <div class="editor" id="w-editor" hidden>
+          <label for="e-text"><b>프롬프트 수정</b><span>{주제}처럼 중괄호로 감싼 칸은 입력값으로 바뀝니다. 지금 보고 있는 언어의 프롬프트만 바뀌어요.</span></label>
+          <textarea id="e-text" rows="9"></textarea>
+          <div class="editor-foot"><span class="muted" id="e-state"></span><button class="mini" id="e-cancel" type="button">취소</button><button class="mini primary" id="e-save" type="button">저장</button></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="copy" id="copy">
+          <svg class="ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          <svg class="ic-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+          <span class="lbl"><span class="a">프롬프트 복사</span><span class="b">복사됨</span></span>
+        </button>
+        <button class="ghost" id="next"><span id="next-lbl">다음 단계</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button class="ghost back" id="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg><span class="back-txt">목록으로</span></button>
+        <div class="status" id="status" role="status"></div>
+      </div>
+      <div class="save" id="w-save" hidden>
+        <label for="w-res"><b>이 단계의 AI 답변 저장</b><span id="w-save-hint"></span></label>
+        <textarea id="w-res" rows="5" placeholder="AI 답변을 받으면 여기에 그대로 붙여넣으세요. 다음 단계에서 자동으로 이어받습니다."></textarea>
+        <div class="save-foot"><span id="w-res-state"></span><span class="save-btns"><button class="mini" data-dl="w-res-state" type="button" hidden>전체 기록 내려받기</button><button class="mini" id="w-res-clear" type="button">비우기</button></span></div>
+      </div>
+    </article>
+  </div>
+
+  <section class="tips only-paper" aria-label="사용 팁">
+    <div><h3>논문은 먼저, 프롬프트는 나중에</h3><p>PDF를 모두 업로드한 다음 프롬프트를 붙여넣으세요. 한 대화에서 1번으로 전체를 읽힌 뒤 이어서 쓰면 맥락이 유지돼 결과가 더 일관됩니다.</p></div>
+    <div><h3>노란 테두리는 빈칸이에요</h3><p>비어 있는 변수는 프롬프트 안에 노란 테두리로 표시됩니다. 눌러서 바로 채울 수 있고, 그대로 복사하면 [주제] 같은 자리표시가 남아요.</p></div>
+    <div><h3>영어 원문이 더 정확할 때가 많아요</h3><p>모델은 영어 지시를 더 일관되게 따르는 편입니다. English로 전환해도 '한국어로 답변'을 켜 두면 결과는 한국어로 받아요.</p></div>
+  </section>
+  <section class="tips only-idea" aria-label="사용 팁">
+    <div><h3>C단계부터는 웹 검색을 켜세요</h3><p>지형 조사, 참신성 점검, 읽기 목록은 실제 문헌을 찾아야 합니다. 사용하는 AI에서 웹 검색이나 리서치 기능을 켠 대화에 붙여넣으세요.</p></div>
+    <div><h3>AI로 다듬기는 검색하지 않아요</h3><p>이 페이지의 다듬기 기능은 질문, 키워드, 검색식만 만들어 줍니다. 논문 제목이나 통계는 넣지 않도록 되어 있으니, 문헌은 C단계 이후에 확인하세요.</p></div>
+    <div><h3>서지 정보는 꼭 원문으로 확인</h3><p>검색 기반 답변도 제목이나 연도가 틀릴 수 있어요. 읽기 목록의 DOI나 링크를 열어 확인한 뒤 내려받으세요. 학술 DB 활용법은 <a href="#how-find">논문 찾고 내려받기</a>에 정리했어요.</p></div>
+  </section>
+  </main>
+  <main id="view-how" hidden></main>
+  <p class="credit">디자인 토큰: <a href="https://github.com/kuratlielia/arc-library" rel="noopener">Arc Library</a> (MIT, © Elia Kuratli). 자세한 고지는 저장소의 NOTICE.md를 확인하세요.</p>
+</div>
+<script>
+(function(){
+const PP=[
+{id:"1",cat:"map",ko:"논문 전체를 문헌 고찰로 정리",en:"Turn your papers into a literature review",
+ out:"읽은 논문 목록 확인, 4–7개 주제로 묶은 구조화된 문헌 고찰, 미해결 질문 5개",
+ when:"논문을 막 모았고 전체 그림을 한 번에 잡고 싶을 때. 대화의 첫 프롬프트로 좋아요.",
+ tko:"{FIELD} 분야의 {TOPIC} 연구 논문들을 업로드합니다. {CHECK}이 논문들을 하나의 연구 코퍼스로 읽고 구조화된 문헌 고찰을 작성하세요. 논문들을 4–7개의 주요 주제로 묶고, 주제마다 핵심 주장, 가장 강력한 증거, 연구자 간 합의와 이견, 시간에 따른 관점의 변화를 설명하세요. 마지막에 미해결 질문 5개를 제시하세요. 중요한 주장마다 해당 논문이나 저자를 인용하고, 논문에 없는 발견은 만들어내지 마세요.",
+ ten:"I'm uploading research papers on {TOPIC} in {FIELD}. {CHECK}Read them as one research corpus and write a structured literature review. Group the papers into 4–7 major themes, explain what each theme argues, identify the strongest evidence, show where researchers agree and disagree, and explain how thinking has evolved over time. End with 5 unresolved questions. Cite specific papers/authors for every important claim. Do not invent findings that are not in the papers.",
+ builtInGround:true},
+{id:"2",cat:"diag",ko:"연구할 가치가 있는 갭 찾기",en:"Find research gaps worth studying",
+ out:"유형별로 라벨링된 갭 목록. 갭마다 근거, 중요성, 연구 질문, 연구 설계",
+ when:"'더 연구가 필요하다' 수준이 아닌, 바로 연구 계획으로 옮길 수 있는 빈틈이 필요할 때.",
+ tko:"{TOPIC}에 관한 이 논문들을 분석해 연구 갭을 찾으세요. '더 많은 연구가 필요하다' 같은 일반적인 갭은 무시하세요. 상충하는 발견, 누락된 모집단, 약한 측정, 탐구되지 않은 변수, 오래된 데이터셋, 방법론적 한계, 검증되지 않은 가정, 직접 비교된 적 없는 이론에서 비롯된 갭을 찾으세요. 각 갭마다 논문의 근거 → 이 갭이 중요한 이유 → 검증 가능한 연구 질문 → 제안 연구 설계를 제시하세요. 순위는 매기지 말고, 각 갭에 유형 라벨을 붙이세요.",
+ ten:"Analyze these papers on {TOPIC} specifically to find research gaps. Ignore generic gaps like “more research is needed.” Find gaps caused by contradictory findings, missing populations, weak measurements, unexplored variables, outdated datasets, methodological limitations, untested assumptions, or theories that have never been compared directly. For each gap, give: evidence from the papers → why the gap matters → a testable research question → suggested study design. Rank nothing; instead label each gap by type."},
+{id:"3",cat:"idea",ko:"논문 속 숨은 연구 질문 추출",en:"Extract “hidden” research questions",
+ out:"구체적 연구 질문 15개와 각 질문의 출처 논문, 2–3문장 추론",
+ when:"저자들이 한계나 논의에서 흘리고 간 단서를 질문으로 바꾸고 싶을 때.",
+ tko:"이 논문들을 저자들이 간접적으로 드러냈지만 충분히 조사하지 않은 문제를 찾는다는 관점으로 읽으세요. 한계, 논의, 상충하는 결과, 설명되지 않은 관찰, 가정, 경계 조건, 향후 연구 섹션을 살펴보세요. 이러한 미해결 문제에서 논리적으로 도출되는 구체적인 연구 질문 15개를 만드세요. 각 질문마다 어떤 논문이 그 여지를 만들었는지 정확히 밝히고, 그 추론을 2–3문장으로 설명하세요.",
+ ten:"Read these papers as if you were looking for problems the authors indirectly reveal but never fully investigate. Look inside limitations, discussion sections, conflicting results, unexplained observations, assumptions, boundary conditions, and future-work sections. Generate 15 specific research questions that logically emerge from those unresolved issues. For each question, show exactly which papers created the opening and explain the reasoning in 2–3 sentences."},
+{id:"4",cat:"map",ko:"연구 지식 지도 만들기",en:"Build a research knowledge map",
+ out:"개념에서 미해결 영역까지 이어지는 화살표형 텍스트 지도",
+ when:"논문별 요약 말고, 개념끼리 어떻게 연결되는지 구조를 보고 싶을 때.",
+ tko:"{TOPIC}에 관한 이 논문들로 지식 지도를 만드세요. 문헌을 다음 순서로 정리하세요: 핵심 개념 → 주요 이론 → 중요 변수 → 제안된 관계 → 일반적 방법 → 주요 발견 → 모순 → 미해결 영역. 논문을 하나씩 요약하지 말고 개념들이 어떻게 연결되는지 보여주세요. 그런 다음 '개념 A → 영향 → 개념 B → 측정 → 방법 C'처럼 화살표를 사용한 텍스트 기반 지도를 제시하세요.",
+ ten:"Create a knowledge map for these papers about {TOPIC}. Organize the literature into: core concepts → major theories → important variables → proposed relationships → common methods → major findings → contradictions → unresolved areas. Show how the concepts connect rather than summarizing papers individually. Then give me a text-based map using arrows such as Concept A → influences → Concept B → measured by → Method C."},
+{id:"5",cat:"map",ko:"논문별 증거 매트릭스",en:"Create a paper-by-paper evidence matrix",
+ out:"논문마다 질문, 이론, 표본, 방법, 변수, 발견, 한계를 정리한 표와 방법론 패턴",
+ when:"논문을 나란히 놓고 비교해야 할 때. 엑셀로 옮겨 관리하기 좋은 형태예요.",
+ tko:"이 논문들을 증거 매트릭스로 만드세요. 모든 논문에 대해 다음을 추출하세요: 연구 질문, 이론/프레임워크, 표본, 데이터셋, 방법론, 독립 변수, 종속 변수, 주요 발견, (보고된 경우) 효과의 크기/방향, 한계, 향후 연구 제안. 항목은 간결하지만 구체적으로 작성하세요. 매트릭스 다음에는 반복되는 방법론적 패턴과, 연구 설계가 비슷한데도 결과가 다른 영역을 식별하세요.",
+ ten:"Turn these papers into an evidence matrix. For every paper extract: research question, theory/framework, sample, dataset, methodology, independent variables, dependent variables, key findings, effect/direction if reported, limitations, and future research suggestions. Keep entries concise but specific. After the matrix, identify recurring methodological patterns and areas where results differ despite similar research designs."},
+{id:"6",cat:"diag",ko:"문헌 전반의 모순 찾기",en:"Find contradictions across the literature",
+ out:"주장 A, 지지 논문, 반대 주장, 지지 논문, 불일치 원인을 담은 모순 매트릭스",
+ when:"같은 질문에 논문마다 다른 답을 내놓아 헷갈릴 때.",
+ tko:"이 논문들에서 {TOPIC}에 관해 서로 상충하는 결과를 찾으세요. '주장 A | 지지 논문 | 반대 주장 | 지지 논문 | 불일치의 가능한 원인' 형식으로 모순 매트릭스를 만드세요. 차이가 표본 특성, 지역, 기간, 측정 방법, 데이터셋, 통계 방법, 정의, 이론적 가정 중 어디에서 비롯되는지 살펴보세요. 진짜 모순과 겉보기에만 모순인 결과를 구분하세요.",
+ ten:"Search these papers for conflicting findings on {TOPIC}. Build a contradiction matrix with: Claim A | Supporting papers | Opposing claim | Supporting papers | Possible explanation for the disagreement. Examine whether the differences could come from sample characteristics, geography, time period, measurement methods, datasets, statistical methods, definitions, or theoretical assumptions. Distinguish true contradictions from results that only appear contradictory."},
+{id:"7",cat:"idea",ko:"검증이 부족한 변수 조합 발굴",en:"Discover under-tested variable combinations",
+ out:"검증 빈도로 본 변수 관계 지도와 'X → Y, Z에 의해 조절/매개' 형식의 제안 10개",
+ when:"새 가설이나 모형을 세우고 싶은데 어떤 변수 조합이 비어 있는지 모를 때.",
+ tko:"{TOPIC}에 관한 이 논문들에서 연구된 중요한 변수를 모두 추출하세요. 어떤 변수 관계가 이미 자주 검증되었고, 어떤 그럴듯한 조합이 거의 또는 전혀 검증되지 않았는지 보여주는 지도를 만드세요. 그런 다음 'X → Y, Z에 의해 조절/매개' 형식으로 연구할 가치가 있는 구체적인 관계 10개를 제안하고, 업로드된 문헌에서 발견된 패턴에만 근거한 이유를 함께 제시하세요.",
+ ten:"Extract all important variables studied across these papers on {TOPIC}. Build a map showing which variable relationships have already been tested frequently and which plausible combinations appear rarely tested or completely untested. Then propose 10 specific relationships worth investigating in the format: X → Y, moderated/mediated by Z, with supporting reasoning based only on patterns found in the uploaded literature.",
+ builtInGround:true},
+{id:"8",cat:"idea",ko:"저자들의 향후 연구 제안 역설계",en:"Reverse-engineer future research ideas",
+ out:"겹치는 제안을 묶은 연구 방향과, 방향마다 더 강한 연구 질문 2–3개",
+ when:"전문가들이 직접 '다음엔 이걸 해야 한다'고 말한 방향을 모아 보고 싶을 때.",
+ tko:"이 논문들의 논의, 한계, 결론, 향후 연구 섹션에 집중하세요. 구체적인 향후 연구 제안을 모두 추출하고, 겹치는 제안들을 더 큰 연구 방향으로 묶으세요. 각 방향마다 연구자들이 이미 알고 있는 것, 부족하다고 명시한 것, 이를 언급한 논문, 그리고 그 제안을 확장할 수 있는 더 강력한 연구 질문 2–3개를 제시하세요. 모호한 아이디어는 피하세요.",
+ ten:"Focus on the Discussion, Limitations, Conclusion, and Future Research sections of these papers. Extract every concrete future-research suggestion and combine overlapping suggestions into larger research directions. For each direction give: what researchers already know, what they explicitly say is missing, which papers mention it, and 2–3 stronger research questions that could extend their suggestion. Avoid vague ideas."},
+{id:"9",cat:"map",ko:"연구 분야의 발전 과정 추적",en:"Track how a research field evolved",
+ out:"이론과 방법의 변화로 나눈 단계별 타임라인. 단계마다 믿음, 반증, 새 질문",
+ when:"분야의 흐름을 설명해야 하거나, 연구 배경 서술을 준비할 때.",
+ tko:"{START}년부터 {END}년까지 이 논문들을 시간순으로 분석하고 {TOPIC} 연구가 어떻게 발전했는지 설명하세요. 임의의 10년 단위가 아니라 이론, 데이터셋, 방법론, 가정, 결론의 변화에 따라 타임라인을 의미 있는 단계로 나누세요. 각 단계마다 연구자들이 무엇을 믿었는지, 어떤 증거가 그 믿음에 도전했는지, 그 이후 어떤 새로운 질문이 등장했는지 설명하세요.",
+ ten:"Analyze these papers chronologically from {START} to {END} and explain how research on {TOPIC} evolved. Divide the timeline into meaningful phases based on changes in theories, datasets, methodologies, assumptions, or conclusions—not arbitrary decades. For each phase explain what researchers believed, what evidence challenged those beliefs, and what new questions appeared afterward."},
+{id:"10",cat:"diag",ko:"되풀이되는 약한 가정 찾기",en:"Find weak assumptions repeated across papers",
+ out:"가정마다 의존하는 논문, 실제 증거 여부, 직접 검증 방법",
+ when:"모두가 당연하게 받아들이는 전제가 정말 맞는지 따져보고 싶을 때.",
+ tko:"이 논문들을 검토해, 연구자들이 직접 검증하지 않은 채 반복해서 받아들이는 가정을 찾으세요. 이론적 가정, 측정 가정, 인과 가정, 모집단 가정, 데이터 가정, 그리고 확립된 사실처럼 쓰이는 정의를 살펴보세요. 각 가정마다 다음을 제시하세요: 해당 가정 → 이 가정에 기대는 논문 → 증거가 실제로 이 가정을 뒷받침하는지 → 향후 연구에서 이를 직접 검증할 방법.",
+ ten:"Review these papers to find assumptions researchers repeatedly accept without testing them directly. Look for theoretical assumptions, measurement assumptions, causal assumptions, population assumptions, data assumptions, and definitions treated as established facts. For each assumption give: the assumption → papers that rely on it → whether the evidence actually supports it → how future research could test it directly."},
+{id:"11",cat:"plan",ko:"박사 수준 연구 의제 설계",en:"Design a PhD-level research agenda",
+ out:"서로 이어지는 3–5개 연구. 연구마다 질문, 가설, 기여, 변수, 방법, 데이터, 공백",
+ when:"단발성 논문이 아니라 몇 년짜리 연구 로드맵이나 과제 계획서가 필요할 때.",
+ tko:"이 논문들에서 얻은 {TOPIC}에 대한 통찰만 사용해, 서로 논리적으로 이어지는 3–5개의 연구로 구성된 연구 의제를 작성하세요. 연구 1은 기초가 되는 미해결 질문을 다루고, 이후 연구는 앞선 연구의 발견을 확장하거나, 반박하거나, 일반화하도록 설계하세요. 각 연구마다 연구 질문, 가설, 이론적 기여, 변수, 제안 방법론, 필요한 데이터, 다루는 문헌 공백을 제시하세요.",
+ ten:"Using only insights from these papers on {TOPIC}, write a logically connected research agenda containing 3–5 studies. Each study should be structured to build on the previous one by extending, challenging, or generalizing it. Study 1 should establish a foundational unresolved question, and later studies should extend, challenge, or generalize earlier findings. For each study provide: research question, hypotheses, theoretical contribution, variables, proposed methodology, required data, and the literature gap it addresses."},
+{id:"12",cat:"diag",ko:"방법론적 약점 감사",en:"Audit methodological weaknesses",
+ out:"반복되는 약점 목록, 논문 속 예시, 더 강한 대안 방법",
+ when:"내 연구 설계를 선행 연구보다 탄탄하게 만들 근거가 필요할 때.",
+ tko:"이 논문들에 쓰인 방법론을 점검하세요. 표본 크기, 표본 추출 편향, 측정의 질, 자기보고식 자료, 인과 추론, 통계 방법, 재현 가능성, 외적 타당도, 누락된 통제 변수, 오래된 데이터셋, 실험 설계와 관련해 반복되는 약점을 찾아내세요. 반복되는 약점마다 해당 논문의 예시를 인용하고, 새로운 연구자가 쓸 수 있는 더 탄탄한 방법론적 대안을 제안하세요.",
+ ten:"Audit the methodologies used in these papers. Identify recurring weaknesses related to sample size, sampling bias, measurement quality, self-reported data, causal inference, statistical methods, replicability, external validity, missing control variables, dataset age, or experimental design. For every recurring weakness, cite examples from the papers and propose a stronger methodological approach a new researcher could use."},
+{id:"13",cat:"idea",ko:"출판 가능한 참신성 각도 찾기",en:"Find a publishable novelty angle",
+ out:"참신성 각도 10개와 각 각도가 기존 연구에 더하는 차별점",
+ when:"주제는 정했는데 '이미 다 연구된 것 같다'는 느낌이 들 때.",
+ tko:"저는 {TOPIC}{EUL} 연구하고 싶지만 기존 연구를 단순히 반복하고 싶지는 않습니다. 이 논문들을 바탕으로 새로운 맥락, 모집단, 이론, 변수, 데이터셋, 방법, 메커니즘, 조절 변수, 매개 변수, 시기, 비교의 조합을 활용해 가능한 참신성 각도 10개를 찾아주세요. 각 각도마다 기존 논문이 이미 다룬 것과, 제안된 연구가 의미 있게 다르게 더하는 것이 정확히 무엇인지 설명하세요.",
+ ten:"I want to study {TOPIC}, but I do not want to simply repeat existing research. Based on these papers, identify 10 possible novelty angles using combinations of new context, population, theory, variable, dataset, method, mechanism, moderator, mediator, time period, or comparison. For each angle explain what existing papers already cover and exactly what the proposed study would add that is meaningfully different."},
+{id:"14",cat:"plan",ko:"문헌을 개념적 틀로 전환",en:"Turn the literature into a conceptual framework",
+ out:"독립 변수 → 매개 변수 → 결과 구조와 별도 표시된 조절 변수, 관계별 확립 정도",
+ when:"연구 모형 그림이나 가설 체계를 문헌 근거와 함께 세워야 할 때.",
+ tko:"이 논문들을 종합해 {TOPIC}에 대한 개념적 틀을 만드세요. 증거가 가장 탄탄한 종속 변수, 주요 예측 변수, 가능한 매개 변수, 조절 변수, 통제 변수, 관련 이론을 찾아내세요. 제안하는 모든 관계마다 이를 뒷받침하는 논문을 밝히세요. 그다음 틀을 '독립 변수 → 매개 변수 → 결과' 형식으로 제시하고, 조절 변수는 따로 표시하세요. 충분히 확립된 관계와 아직 불확실한 관계를 분명히 구분하세요.",
+ ten:"Synthesize these papers into a conceptual framework for {TOPIC}. Identify the best-supported dependent variables, key predictors, potential mediators, moderators, control variables, and relevant theories. Show which papers support every proposed relationship. Then output the framework as: Independent variable → Mediator → Outcome, with moderators shown separately. Clearly mark which relationships are well established and which remain uncertain."},
+{id:"15",cat:"idea",ko:"연구 기회 스캐너 실행",en:"Run a “research opportunity scanner”",
+ out:"구체적 연구 기회 20개를 기회, 근거, 미해결 이유, 질문, 최소 연구로 정리한 표",
+ when:"마지막에 모든 각도를 한 번에 훑어 후보를 넓게 뽑고 싶을 때.",
+ tko:"이 논문들을 아직 답이 나오지 않은 연구 기회의 데이터셋으로 보고, 다음 범주에 걸쳐 살펴보세요: 모순, 빠진 모집단, 빠진 맥락, 빠진 변수, 검증되지 않은 메커니즘, 방법론적 약점, 오래된 증거, 이론 간 충돌, 재현 연구 기회, 예상 밖의 발견, 저자들이 남긴 미해결 질문. 구체적인 연구 기회 20개를 만들고, 각각 '기회 | 논문 속 근거 | 아직 풀리지 않은 이유 | 연구 질문 | 이를 확인할 최소 규모의 연구' 형식으로 제시하세요. 업로드된 논문의 근거로 추적할 수 없는 기회는 제외하세요.",
+ ten:"Treat these papers as a dataset of unanswered research opportunities. Scan them across these categories: contradictions, missing populations, missing contexts, missing variables, untested mechanisms, methodological weaknesses, outdated evidence, theory conflicts, replication opportunities, unexpected findings, and unanswered author questions. Generate 20 specific opportunities. For each provide: Opportunity | Evidence from the papers | Why it is unresolved | Research question | Minimum study to investigate it. Reject any opportunity that cannot be traced to evidence in the uploaded papers.",
+ builtInGround:true}
+];
+
+const IP=[
+{id:"A",cat:"step",ko:"아이디어를 연구 질문으로 구체화",en:"Sharpen a vague idea into research questions",
+ out:"핵심 문제 한 문장, 연구 질문 후보 4–6개(유형, 대상, 맥락, 기간), 개념 정의, 범위 조정법",
+ when:"하고 싶은 건 있는데 아직 '무엇을 묻는 연구인지' 한 문장으로 말하기 어려울 때. 웹 검색 없이도 됩니다.",
+ builtInGround:true,noCite:true,
+ tko:"저는 다음과 같은 막연한 연구 아이디어를 가지고 있습니다: \"{IDEA}\" (분야: {FIELD}). 아직 관련 논문은 읽지 않았습니다. 이 아이디어를 연구 가능한 형태로 구체화해 주세요. 1) 아이디어에 담긴 핵심 문제를 한 문장으로 정리하고, 2) 연구 가능한 질문 후보 4–6개를 제시하되 각각 연구 유형(탐색, 설명, 평가, 비교), 대상, 맥락, 기간을 명시하고, 3) 핵심 개념의 작업적 정의를 제안하고, 4) 각 질문이 너무 넓거나 좁은 이유와 범위를 조정하는 방법을 설명하고, 5) 본격적으로 조사하기 전에 사실 여부를 확인해야 할 전제를 나열하세요. 특정 논문이나 통계를 인용하지 말고, 확인이 필요한 내용은 '확인 필요'로 표시하세요.",
+ ten:"I have the following vague research idea: \"{IDEA}\" (field: {FIELD}). I have not read any papers on it yet. Help me turn it into something researchable. 1) State the core problem in one sentence. 2) Propose 4–6 candidate research questions, labeling each with its type (exploratory, explanatory, evaluative, comparative), target population, context, and time frame. 3) Suggest working definitions for the key concepts. 4) Explain why each question may be too broad or too narrow and how to adjust its scope. 5) List the premises I should verify before investing in a literature search. Do not cite specific papers or statistics; mark anything that needs verification as “needs checking.”"},
+{id:"B",cat:"step",ko:"검색 전략 설계",en:"Design a literature search strategy",
+ out:"개념별 한·영 키워드와 동의어 표, 데이터베이스별 불리언 검색식, 포함·제외 기준",
+ when:"어떤 단어로 찾아야 할지 막막하거나, 검색 결과가 너무 많거나 적을 때.",
+ builtInGround:true,noCite:true,
+ tko:"연구 주제: \"{IDEA}\" (분야: {FIELD}). 이 주제의 선행연구를 체계적으로 찾기 위한 검색 전략을 설계해 주세요. 핵심 개념별로 한국어와 영어 키워드, 동의어, 약어, 상위어와 하위어를 표로 정리하고, Google Scholar, Scopus 또는 Web of Science, KCI와 RISS 각각에 맞는 불리언 검색식을 작성하세요. 포함·제외 기준(연도, 언어, 문헌 유형, 연구 방법)을 제안하고, 검색 결과가 너무 많거나 적을 때 검색식을 조정하는 방법도 알려주세요.",
+ ten:"Research topic: \"{IDEA}\" (field: {FIELD}). Design a search strategy for systematically finding prior research on this topic. For each key concept, build a table of Korean and English keywords, synonyms, abbreviations, and broader and narrower terms. Write Boolean search strings tailored to Google Scholar, Scopus or Web of Science, and KCI and RISS. Propose inclusion and exclusion criteria (years, languages, document types, research methods), and explain how to adjust the search strings when they return too many or too few results."},
+{id:"C",cat:"step",ko:"선행연구 지형 조사",en:"Map the prior research landscape",web:true,
+ out:"3–6개 연구 흐름별 핵심 주장, 방법과 데이터, 대표 문헌(서지 정보와 링크)",
+ when:"이 주제를 누가 어떤 방식으로 연구해 왔는지 큰 그림이 필요할 때. 웹 검색이나 리서치 기능이 켜진 대화에서 쓰세요.",
+ builtInGround:true,
+ tko:"웹 검색을 사용해 \"{IDEA}\"에 관한 선행연구의 지형을 조사해 주세요(분야: {FIELD}). 체계적 문헌고찰과 메타분석, 많이 인용된 대표 연구, 최근 3년 이내 연구를 우선 찾으세요. 찾은 문헌을 3–6개의 연구 흐름으로 묶고, 흐름마다 핵심 주장, 주로 쓰는 방법과 데이터, 대표 문헌을 정리하세요. 각 문헌은 제목, 저자, 연도, 게재처, 링크 또는 DOI와 함께 제시하세요. 검색으로 실제 확인한 문헌만 포함하고, 서지 정보를 끝까지 확인하지 못한 항목은 따로 표시하세요.",
+ ten:"Use web search to map the landscape of prior research on \"{IDEA}\" (field: {FIELD}). Prioritize systematic reviews and meta-analyses, highly cited landmark studies, and studies from the last three years. Group what you find into 3–6 research streams, and for each stream summarize its core claims, the methods and data it typically uses, and its representative works. Give each work with title, authors, year, venue, and a link or DOI. Include only works you actually found through search, and flag separately any item whose bibliographic details you could not fully verify."},
+{id:"D",cat:"step",ko:"참신성과 실현 가능성 점검",en:"Check novelty and feasibility",web:true,
+ out:"유사 연구 비교, 쓸 수 있는 데이터, 방법론, 윤리·일정 위험, 진행 여부 권고",
+ when:"이미 누가 한 연구는 아닌지, 지금 실제로 할 수 있는 연구인지 판단하고 싶을 때.",
+ builtInGround:true,
+ tko:"웹 검색을 사용해 다음 연구 아이디어가 이미 연구되었는지, 그리고 지금 수행할 수 있는지 점검해 주세요: \"{IDEA}\" (분야: {FIELD}). 1) 같은 질문이나 매우 비슷한 질문을 다룬 연구를 찾아 무엇이 같고 다른지 비교하고, 2) 활용할 수 있는 데이터(공개 데이터셋, 공공데이터, 설문이나 실험 가능성)를 조사하고, 3) 적용할 만한 방법론과 필요한 역량을 제시하고, 4) 윤리·법적 제약(개인정보, 연구윤리 심의 등)과 일정상 위험을 정리하세요. 마지막에 '그대로 진행', '범위를 좁혀 진행', '방향 전환' 중 하나를 근거와 함께 권고하세요. 검색으로 확인한 출처만 근거로 사용하세요.",
+ ten:"Use web search to check whether the following research idea has already been studied and whether it is feasible now: \"{IDEA}\" (field: {FIELD}). 1) Find studies that address the same or a very similar question and compare what is the same and what differs. 2) Investigate usable data (open datasets, public-sector data, feasibility of surveys or experiments). 3) Suggest suitable methodologies and the skills they require. 4) Summarize ethical and legal constraints (privacy, ethics review, etc.) and schedule risks. Finish by recommending one of “proceed as is,” “narrow the scope and proceed,” or “change direction,” with reasons. Use only sources you verified through search as evidence."},
+{id:"E",cat:"step",ko:"먼저 읽을 논문 목록 만들기",en:"Build a starter reading list",web:true,
+ out:"리뷰, 고전, 대표 실증, 최신, 반대 관점이 고루 섞인 논문 표(서지, 이유, 우선순위, 원문 경로)",
+ when:"사전 조사를 마치고 실제로 내려받아 읽을 논문을 고를 때. 이 목록을 모으면 논문 분석 모드로 넘어가세요.",
+ builtInGround:true,
+ tko:"웹 검색을 사용해 \"{IDEA}\" 연구를 시작하기 위해 먼저 읽어야 할 논문 {NREAD}의 목록을 만들어 주세요(분야: {FIELD}). 리뷰 논문, 분야를 정의한 고전 연구, 대표 실증 연구, 최근 연구, 반대 관점의 연구가 고루 포함되도록 하세요. 각 논문마다 제목, 저자, 연도, 게재처, DOI 또는 링크, 읽어야 하는 이유 한 줄, 우선순위(필독, 권장, 참고)를 표로 제시하세요. 무료로 원문을 구할 수 있는 경로가 있으면 함께 알려주세요. 실제로 확인한 논문만 포함하세요.",
+ ten:"Use web search to build a list of {NREAD} papers I should read first to start research on \"{IDEA}\" (field: {FIELD}). Include a balanced mix of review papers, classic studies that defined the field, representative empirical studies, recent studies, and studies with opposing views. For each paper give, in a table: title, authors, year, venue, DOI or link, a one-line reason to read it, and a priority (must-read, recommended, reference). Note any route to a free full text. Include only papers you actually verified."},
+{id:"F",cat:"step",ko:"정책·실무 자료 조사",en:"Survey policy and practitioner sources",web:true,
+ out:"정부·공공기관 보고서, 법령, 공식 통계, 업계 백서 목록과 학술 연구와의 차이",
+ when:"학술 논문만으로는 현장 상황이 보이지 않을 때. 정책 연구나 실무 보고서를 준비할 때 특히 유용해요.",
+ builtInGround:true,
+ tko:"웹 검색을 사용해 \"{IDEA}\"와 관련된 학술 논문 외의 자료를 조사해 주세요(분야: {FIELD}). 정부·공공기관 보고서, 정책 문서와 법령, 공식 통계, 국제기구 자료, 업계 백서와 기술 보고서를 찾아 발행 기관, 연도, 핵심 내용, 링크를 정리하세요. 학술 연구와 실무·정책 현장 사이에서 관점이나 수치가 다른 지점을 짚고, 연구 질문을 다듬는 데 쓸 수 있는 시사점을 제시하세요. 확인한 출처만 포함하세요.",
+ ten:"Use web search to survey non-academic sources related to \"{IDEA}\" (field: {FIELD}). Find government and public-agency reports, policy documents and legislation, official statistics, international-organization materials, and industry white papers or technical reports, and list each with publisher, year, key content, and link. Point out where perspectives or figures differ between academic research and practice or policy, and suggest implications for refining the research question. Include only sources you verified."}
+];
+const LINK={
+ "1":{take:[],pass:"주제별 구조와 미해결 질문 5개"},
+ "5":{take:[["1","주제 구조","theme structure"]],pass:"논문별 증거 매트릭스"},
+ "4":{take:[["1","주제 구조","theme structure"],["5","증거 매트릭스","evidence matrix"]],pass:"개념 간 연결을 보여주는 지식 지도"},
+ "6":{take:[["5","증거 매트릭스","evidence matrix"]],pass:"모순 매트릭스"},
+ "12":{take:[["5","증거 매트릭스","evidence matrix"]],pass:"반복되는 방법론적 약점 목록"},
+ "3":{take:[["6","모순 매트릭스","contradiction matrix"],["12","방법론 약점 목록","list of methodological weaknesses"]],pass:"숨은 연구 질문 15개"},
+ "15":{take:[["3","연구 질문 15개","15 research questions"],["6","모순 매트릭스","contradiction matrix"],["12","방법론 약점 목록","list of methodological weaknesses"]],pass:"연구 기회 20개"},
+ "13":{take:[["3","연구 질문","research questions"],["15","연구 기회 목록","research opportunities"]],pass:"참신성 각도 10개와 그중 고른 각도"},
+ "14":{take:[["4","지식 지도","knowledge map"],["5","증거 매트릭스","evidence matrix"]],pass:"개념적 틀(변수 관계)"},
+ "11":{take:[["13","고른 참신성 각도","chosen novelty angle"],["14","개념적 틀","conceptual framework"]],pass:"3–5개 연구로 된 연구 의제"},
+ "2":{take:[["5","증거 매트릭스","evidence matrix"]],pass:"유형별 연구 갭 목록"},
+ "7":{take:[["5","증거 매트릭스","evidence matrix"]],pass:"변수 관계 지도와 제안 10개"},
+ "8":{take:[["1","주제 구조","theme structure"]],pass:"통합된 향후 연구 방향"},
+ "9":{take:[["1","주제 구조","theme structure"]],pass:"단계별 발전 타임라인"},
+ "10":{take:[["5","증거 매트릭스","evidence matrix"]],pass:"약한 가정 목록과 검증 방법"},
+ "A":{take:[],pass:"고른 연구 질문, 개념 정의, 확인할 전제"},
+ "B":{take:[["A","고른 연구 질문과 개념 정의","chosen research question and concept definitions"]],pass:"검색식, 키워드 표, 포함·제외 기준"},
+ "C":{take:[["B","검색식과 포함·제외 기준","search strings and inclusion/exclusion criteria"]],pass:"연구 흐름 정리와 대표 문헌"},
+ "D":{take:[["C","연구 흐름과 대표 문헌","research streams and key works"]],pass:"유사 연구 비교와 진행 권고"},
+ "E":{take:[["C","대표 문헌","key works"],["D","진행 권고와 조정된 범위","recommendation and adjusted scope"]],pass:"내려받을 논문 목록"},
+ "F":{take:[["B","키워드와 검색식","keywords and search strings"]],pass:"정책·실무 자료 목록"}
+};
+const CATS={map:"파악",diag:"진단",idea:"아이디어",plan:"설계",step:"사전 조사"};
+const VAR_LABEL={ko:{TOPIC:"주제",FIELD:"분야",N:"논문 수",START:"시작 연도",END:"종료 연도",IDEA:"연구 아이디어",PURPOSE:"목적",NREAD:"읽을 논문 수",CONTEXT:"연구 맥락",METHOD:"방법론"},
+ en:{TOPIC:"TOPIC",FIELD:"FIELD",N:"NUMBER OF PAPERS",START:"START YEAR",END:"END YEAR",IDEA:"RESEARCH IDEA",PURPOSE:"PURPOSE",NREAD:"NUMBER OF PAPERS",CONTEXT:"CONTEXT",METHOD:"METHOD"}};
+const MODES={
+ paper:{list:PP,flow:[
+  {name:"전체 파악",ids:["1"]},{name:"증거 정리",ids:["5"]},{name:"구조화",ids:["4"]},
+  {name:"모순·약점 점검",ids:["6","12"]},{name:"기회 도출",ids:["3","15"]},
+  {name:"참신성 선별",ids:["13"]},{name:"틀·의제 설계",ids:["14","11"]}]},
+ idea:{list:IP,flow:[
+  {name:"질문 구체화",ids:["A"]},{name:"검색 전략",ids:["B"]},{name:"지형 조사",ids:["C"]},
+  {name:"참신성 점검",ids:["D"]},{name:"읽기 목록",ids:["E"]},{name:"논문 분석으로",ids:[],handoff:true}]}
+};
+MODES.paper.order=MODES.paper.flow.flatMap(s=>s.ids);
+MODES.idea.order=MODES.idea.flow.flatMap(s=>s.ids);
+const ADD={
+ ground:{ko:"업로드된 논문에 근거가 없는 내용은 만들어내지 말고, 확인할 수 없는 부분은 '논문에서 확인 불가'라고 표시하세요.",en:"Do not invent anything that is not supported by the uploaded papers; mark anything you cannot verify as “not found in the papers.”"},
+ cite:{ko:"모든 주장 뒤에 (저자, 연도) 형식으로 출처를 표기하세요.",en:"After every claim, cite the source in (Author, Year) format."},
+ ko:"Write the entire response in Korean."
+};
+
+/* ---------- state ---------- */
+const store={get(k,d){try{const v=localStorage.getItem("ppg:"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ppg:"+k,JSON.stringify(v))}catch(e){}}};
+const oldSel=store.get("sel",null);
+const S={
+ mode:store.get("mode","paper"),
+ vars:Object.assign({TOPIC:"",FIELD:"",N:"",START:"",END:"",IDEA:"",PURPOSE:"",NREAD:"",CONTEXT:"",METHOD:""},store.get("vars",{})),
+ sel:Object.assign({paper:"1",idea:"A"},typeof oldSel==="object"&&oldSel?oldSel:{}),
+ lang:store.get("lang","ko"),cat:"all",q:"",sort:store.get("sort","flow"),
+ used:new Set(store.get("used",[]).map(String)),
+ opt:Object.assign({ground:true,cite:false,ko:true},store.get("opt",{})),
+ refine:store.get("refine",null),
+ edits:store.get("edits",{}),
+ run:store.get("run","same"),
+ res:store.get("res",{})
+};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const M=()=>MODES[S.mode];
+const byId=id=>PP.concat(IP).find(p=>p.id===id);
+const disp=p=>/^\d+$/.test(p.id)?String(p.id).padStart(2,"0"):p.id;
+const reduced=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
+const stepName=(id,lang="ko")=>{const p=byId(id);const n=/^\d+$/.test(id)?(lang==="ko"?id+"번":id+"."):(lang==="ko"?id+"단계":id+".");return n+" "+(lang==="ko"?p.ko:p.en)};
+const takes=p=>(LINK[p.id]||{take:[]}).take;
+const fmtLen=s=>s.length.toLocaleString("ko-KR")+"자";
+let saveTimer;function saveRes(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>store.set("res",S.res),250)}
+
+/* ---------- theme ---------- */
+const root=document.documentElement;
+const savedTheme=store.get("theme",null);
+if(savedTheme)root.dataset.theme=savedTheme;
+$("#theme").addEventListener("click",()=>{
+ const dark=root.dataset.theme?root.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
+ root.dataset.theme=dark?"light":"dark";store.set("theme",root.dataset.theme);
+});
+
+/* ---------- mode ---------- */
+function setMode(m,opts={}){
+ S.mode=m;store.set("mode",m);document.body.dataset.mode=m;
+ document.querySelectorAll(".mode-btn").forEach(b=>b.setAttribute("aria-pressed",b.dataset.mode===m));
+ $("#q").placeholder=m==="paper"?"모순, 갭, 변수…":"검색식, 데이터, 읽기 목록…";
+ renderRefine();renderAll();
+ requestAnimationFrame(moveThumb);
+}
+document.querySelectorAll(".mode-btn").forEach(b=>b.addEventListener("click",()=>setMode(b.dataset.mode)));
+
+/* ---------- variables ---------- */
+function syncVar(k){document.querySelectorAll(`[data-var="${k}"]`).forEach(i=>{if(document.activeElement!==i)i.value=S.vars[k]||""})}
+document.querySelectorAll("[data-var]").forEach(inp=>{inp.value=S.vars[inp.dataset.var]||""});
+document.addEventListener("input",e=>{const inp=e.target.closest("[data-var]");if(!inp)return;const k=inp.dataset.var;S.vars[k]=inp.value.trim();store.set("vars",S.vars);syncVar(k);renderPrompt(k);updateRefineBtn()});
+
+/* ---------- rail ---------- */
+function renderRail(){
+ const flow=M().flow;const cur=flow.findIndex(s=>s.ids.includes(S.sel[S.mode]));
+ $("#rail").style.setProperty("--n",flow.length);
+ $("#rail").innerHTML=flow.map((s,i)=>{
+  const done=s.ids.length&&s.ids.every(id=>S.used.has(id));
+  const ids=s.handoff?"논문을 모은 뒤":s.ids.map(n=>/^\d+$/.test(n)?n+"번":n+"단계").join(", ");
+  const dot=done?'<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>'
+   :s.handoff?'<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>':i+1;
+  return `<li class="${done?"done":""} ${i===cur?"current":""}"><button class="stage" data-stage="${i}" aria-label="${i+1}단계 ${s.name}${done?", 완료":""}"><span class="dot">${dot}</span><span class="stage-name">${s.name}</span><span class="stage-ids">${ids}</span></button></li>`;
+ }).join("");
+}
+$("#rail").addEventListener("click",e=>{
+ const b=e.target.closest("[data-stage]");if(!b)return;const s=M().flow[+b.dataset.stage];
+ if(s.handoff)return handoff();
+ select(s.ids.find(id=>!S.used.has(id))||s.ids[0],true);
+});
+function handoff(){
+ if(!S.vars.TOPIC&&S.vars.IDEA){S.vars.TOPIC=S.vars.IDEA;store.set("vars",S.vars);syncVar("TOPIC")}
+ S.sel.paper="1";store.set("sel",S.sel);setMode("paper");
+ $("#status").className="status";$("#status").textContent=S.vars.TOPIC?"아이디어를 주제 칸에 옮겼어요. 내려받은 논문을 올린 뒤 1번부터 시작하세요.":"내려받은 논문을 올린 뒤 1번부터 시작하세요.";
+ scrollTo({top:0,behavior:reduced()?"auto":"smooth"});
+}
+
+/* ---------- list ---------- */
+function matches(p){
+ if(S.mode==="paper"&&S.cat!=="all"&&p.cat!==S.cat)return false;
+ if(!S.q)return true;
+ const hay=(p.id+" "+p.ko+" "+p.en+" "+p.out+" "+p.when+" "+CATS[p.cat]+" "+p.tko+" "+p.ten).toLowerCase();
+ return S.q.toLowerCase().split(/\s+/).every(w=>hay.includes(w));
+}
+function itemHTML(p){
+ const on=p.id===S.sel[S.mode];const u=S.used.has(p.id);
+ return `<li><button class="item" data-id="${p.id}" aria-current="${on}"><span class="item-no">${disp(p)}</span><span><span class="item-title">${p.ko}</span><span class="item-out">${p.out}</span></span><span class="used ${u?"on":""}" title="${u?"복사한 적 있음":""}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span></button></li>`;
+}
+function renderList(){
+ const all=M().list.filter(matches);
+ if(!all.length){
+  $("#list").innerHTML=`<li class="empty">'${esc(S.q)}'에 맞는 프롬프트가 없어요.<br>다른 단어로 찾거나 필터를 지워 보세요.<br><button id="clear">검색 지우기</button></li>`;
+  $("#clear").onclick=()=>{$("#q").value="";S.q="";setCat("all");renderList();$("#q").focus()};return;
+ }
+ if(S.sort==="id"){$("#list").innerHTML=all.map(itemHTML).join("");return}
+ const seen=new Set();let html="";
+ M().flow.forEach((s,i)=>{
+  const items=s.ids.map(byId).filter(p=>all.includes(p));
+  if(!items.length)return;
+  items.forEach(p=>seen.add(p.id));
+  html+=`<li class="group-head" aria-hidden="true">${i+1}단계 <span>${s.name}</span></li>`+items.map(itemHTML).join("");
+ });
+ const rest=all.filter(p=>!seen.has(p.id));
+ if(rest.length)html+=`<li class="group-head" aria-hidden="true"><span>필요할 때</span></li>`+rest.map(itemHTML).join("");
+ $("#list").innerHTML=html;
+}
+$("#list").addEventListener("click",e=>{const b=e.target.closest("[data-id]");if(b)select(b.dataset.id,innerWidth<=960)});
+$("#list").addEventListener("keydown",e=>{
+ if(e.key!=="ArrowDown"&&e.key!=="ArrowUp")return;
+ const btns=[...document.querySelectorAll(".item")];const i=btns.indexOf(document.activeElement);if(i<0)return;
+ e.preventDefault();const n=btns[Math.max(0,Math.min(btns.length-1,i+(e.key==="ArrowDown"?1:-1)))];n.focus();select(n.dataset.id,false);
+});
+document.querySelectorAll(".sorter button").forEach(b=>b.addEventListener("click",()=>{
+ S.sort=b.dataset.sort;store.set("sort",S.sort);
+ document.querySelectorAll(".sorter button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderList();
+}));
+
+/* ---------- segmented ---------- */
+function moveThumb(){const on=$("#seg [aria-pressed='true']");const t=$("#seg .thumb");if(!on.offsetWidth)return;t.style.width=on.offsetWidth+"px";t.style.transform=`translateX(${on.offsetLeft-4}px)`}
+function setCat(c){S.cat=c;document.querySelectorAll("#seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.cat===c));moveThumb()}
+$("#seg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;setCat(b.dataset.cat);renderList()});
+addEventListener("resize",moveThumb);
+
+/* ---------- search ---------- */
+$("#q").addEventListener("input",e=>{S.q=e.target.value.trim();renderList()});
+addEventListener("keydown",e=>{if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();$("#q").focus()}if(e.key==="Escape"&&document.activeElement===$("#q")){$("#q").value="";S.q="";renderList()}});
+
+/* ---------- workspace ---------- */
+const current=()=>byId(S.sel[S.mode]);
+function ctxParts(p){
+ const t=takes(p);if(!t.length)return null;
+ if(S.run==="same"){
+  const names=t.map(x=>S.lang==="ko"?x[1]:x[2]);
+  return {kind:"same",text:S.lang==="ko"
+   ?`이 대화에서 앞서 정리한 내용(${names.join(", ")})이 있다면 이어받아 작업하세요. 그대로 반복하지 말고 그 위에 쌓되, 새로 확인한 내용이 앞 결과와 다르면 그 차이를 짚어 주세요.`
+   :`If earlier turns of this conversation produced the ${names.join(", ")}, build on them. Do not repeat them; extend them, and point out where new findings differ.`,names};
+ }
+ const have=t.filter(x=>(S.res[x[0]]||"").trim()),miss=t.filter(x=>!(S.res[x[0]]||"").trim());
+ const blocks=have.map(x=>S.lang==="ko"
+  ?`<이전_단계_결과 단계="${stepName(x[0],"ko")}" 활용할_내용="${x[1]}">\n${S.res[x[0]].trim()}\n</이전_단계_결과>`
+  :`<previous_step_result step="${stepName(x[0],"en")}" use="${x[2]}">\n${S.res[x[0]].trim()}\n</previous_step_result>`);
+ const intro=S.lang==="ko"
+  ?"아래는 이전 단계에서 얻은 결과입니다. 이 내용을 이어받아 작업하되, 그대로 반복하지 말고 그 위에 쌓아 주세요. 새로 확인한 내용이 이전 결과와 다르면 그 차이를 짚어 주세요."
+  :"Below are results from earlier steps. Build on them rather than repeating them, and point out where new findings differ.";
+ const chk=/^\d+$/.test(p.id)&&p.id!=="1"?(S.lang==="ko"
+  ?`시작하기 전에 이 대화에서 읽을 수 있는 논문 파일 수를 알려주고, 읽지 못했거나 잘린 파일이 있으면 표시하세요.`
+  :`Before you start, tell me how many paper files you can access in this conversation and flag any you cannot read or that appear truncated.`):"";
+ const parts=[];if(have.length)parts.push(intro+"\n\n"+blocks.join("\n\n")+"\n\n---");if(chk)parts.push(chk);
+ return {kind:"split",have,miss,chk,text:parts.join("\n\n")};
+}
+const TOK={TOPIC:"주제",FIELD:"분야",IDEA:"아이디어",START:"시작 연도",END:"종료 연도",NREAD:"읽을 논문 수",CHECK:"논문 목록 확인"};
+const editKey=p=>p.id+":"+S.lang;
+const origTpl=p=>S.lang==="ko"?p.tko:p.ten;
+const getTpl=p=>S.edits[editKey(p)]||origTpl(p);
+const toDisplay=t=>t.replace(/\{TOPIC\}\{EUL\}/g,"{주제}을(를)").replace(/\{(\w+)\}/g,(m,k)=>TOK[k]?`{${TOK[k]}}`:m);
+function fromDisplay(t){
+ t=t.replace(/\{주제\}을\(를\)/g,"{TOPIC}{EUL}");
+ Object.entries(TOK).forEach(([k,l])=>{t=t.split(`{${l}}`).join(`{${k}}`)});
+ return t;
+}
+const PROFILE_STEPS=new Set(["2","3","7","8","11","12","13","14","15","A","B","C","D","E","F"]);
+const METHOD_TXT={quant:["양적 연구","quantitative"],qual:["질적 연구","qualitative"],mixed:["혼합 연구","mixed methods"]};
+function profileLine(p){
+ if(!PROFILE_STEPS.has(p.id))return "";
+ const v=S.vars,ko=S.lang==="ko",parts=[];
+ if(v.PURPOSE)parts.push(ko?`연구 목적은 ${v.PURPOSE}`:`the purpose is ${v.PURPOSE}`);
+ if(v.METHOD&&METHOD_TXT[v.METHOD])parts.push(ko?`선호하는 방법론은 ${METHOD_TXT[v.METHOD][0]}`:`the preferred methodology is ${METHOD_TXT[v.METHOD][1]}`);
+ if(v.CONTEXT)parts.push(ko?`연구 맥락은 ${v.CONTEXT}`:`the research context is ${v.CONTEXT}`);
+ if(!parts.length)return "";
+ return ko?`참고할 조건: ${parts.join(", ")}입니다. 이 조건에 맞춰 제안하는 질문의 범위, 연구 설계, 실현 가능성을 조정하세요.`
+  :`Constraints to consider: ${parts.join("; ")}. Adjust the scope of questions, study designs, and feasibility accordingly.`;
+}
+function renderMore(){
+ const n=["PURPOSE","CONTEXT","METHOD"].filter(k=>S.vars[k]).length;
+ document.querySelectorAll("[data-more-count]").forEach(e=>e.textContent=n?`${n}개 입력됨`:"");
+ document.querySelectorAll(".method button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===(S.vars.METHOD||"")));
+}
+document.addEventListener("click",e=>{const b=e.target.closest(".method button");if(!b)return;S.vars.METHOD=b.dataset.m;store.set("vars",S.vars);renderMore();renderPrompt()});
+document.addEventListener("input",e=>{if(e.target.closest("[data-more]"))renderMore()});
+function buildText(p,html,changed){
+ const tpl=getTpl(p);
+ const chip=(k,txt,cls)=>`<button class="ph ${cls}${k===changed?" pop":""}" data-k="${k}" title="${VAR_LABEL.ko[k]} ${cls==="filled"?"수정":"입력"}">${esc(txt)}</button>`;
+ const n=S.vars.N,ko=S.lang==="ko";
+ const special={
+  EUL:()=>{const t=S.vars.TOPIC||"";const c=t.charCodeAt(t.length-1);if(c>=0xAC00&&c<=0xD7A3)return (c-0xAC00)%28?"을":"를";return "을(를)"},
+  PURPOSE_OPT:()=>{const v=S.vars.PURPOSE;if(!v)return "";const pre=ko?", 목적: ":", purpose: ";return html?pre+chip("PURPOSE",v,"filled"):pre+v},
+  NREAD:()=>{const v=S.vars.NREAD;const t=v?(ko?v+"편":v):(ko?"20편":"20");return html?chip("NREAD",v?t:t+(ko?" (기본값)":" (default)"),v?"filled":"opt"):t},
+  CHECK:()=>{const base=ko?"분석을 시작하기 전에 읽은 논문 목록(저자, 연도, 제목)을 표로 먼저 보여주세요. 읽지 못했거나 내용이 잘린 파일이 있으면 따로 알려주세요."
+    :"Before you begin the analysis, list the papers you have read (authors, year, title) in a table, and flag any file you could not read or that appears truncated.";
+   return (html?esc(base):base)+" ";}
+ };
+ let out=(html?esc(tpl):tpl).replace(/\{(PURPOSE_OPT|NREAD|CHECK|EUL)\}/g,(m,k)=>"\u0000"+k+"\u0000");
+ out=out.replace(/\{(TOPIC|FIELD|N|START|END|IDEA|PURPOSE)\}/g,(m,k)=>{
+  const v=S.vars[k];const label=VAR_LABEL[S.lang][k];
+  if(!html)return v||`[${label}]`;
+  return v?`<button class="ph filled${k===changed?" pop":""}" data-k="${k}" title="${VAR_LABEL.ko[k]} 수정">${esc(v)}</button>`:`<button class="ph empty" data-k="${k}" title="${VAR_LABEL.ko[k]} 입력">${label}</button>`;
+ });
+ out=out.replace(/\u0000(\w+)\u0000/g,(m,k)=>special[k]());
+ const adds=[];
+ if(S.opt.ground&&!p.builtInGround)adds.push(ADD.ground[S.lang]);
+ if(S.opt.cite&&!p.noCite)adds.push(ADD.cite[S.lang]);
+ const prof=profileLine(p);if(prof)adds.unshift(prof);
+ if(S.opt.ko&&S.lang==="en")adds.push(ADD.ko);
+ const c=ctxParts(p);
+ if(html){
+  let pre="";
+  if(c&&c.kind==="same")pre=`<span class="ctx">${esc(c.text)}</span>`;
+  else if(c){
+   const h=c.have.map(x=>`<b>${esc(stepName(x[0]))}</b> (${fmtLen(S.res[x[0]].trim())})`).join(", ");
+   const ms=c.miss.map(x=>esc(stepName(x[0]))).join(", ");
+   pre=`<span class="ctx">${c.chk?esc(c.chk)+"<br>":""}${c.have.length?`이전 단계 결과가 프롬프트 앞에 함께 담겨 복사돼요: ${h}.`:"이어받을 이전 결과가 아직 저장되지 않았어요."}${c.miss.length?` 비어 있음: ${ms}.`:""}</span>`;
+  }
+  out=pre+out;
+  if(adds.length)out+=`<span class="add">${esc(adds.join(" "))}</span>`;
+ }else{
+  if(c&&c.text)out=c.text+"\n\n"+out;
+  if(adds.length)out+="\n\n"+adds.join(" ");
+ }
+ return out;
+}
+function missing(p){const tpl=getTpl(p);return [...new Set([...tpl.matchAll(/\{(\w+)\}/g)].map(m=>m[1]))].filter(k=>VAR_LABEL.ko[k]&&k!=="NREAD"&&k!=="PURPOSE"&&!S.vars[k])}
+function renderPrompt(changed){
+ const p=current();
+ $("#w-prompt").innerHTML=buildText(p,true,changed);
+ const miss=missing(p);const st=$("#status");
+ const c=ctxParts(p);const rm=c&&c.kind==="split"?c.miss:[];
+ if(miss.length||rm.length){st.className="status warn";st.textContent=[miss.length?`비어 있는 항목: ${miss.map(k=>VAR_LABEL.ko[k]).join(", ")}. 노란 칸을 눌러 채우거나 그대로 복사하세요.`:"",rm.length?`이전 결과 없이 복사됩니다: ${rm.map(x=>stepName(x[0])).join(", ")}.`:""].filter(Boolean).join(" ")}
+ else if(st.classList.contains("warn")){st.className="status";st.textContent=""}
+}
+function nextOf(p){
+ const order=M().order;const i=order.indexOf(p.id);
+ if(i>=0&&i<order.length-1)return {id:order[i+1]};
+ if(S.mode==="idea"&&i===order.length-1)return {handoff:true};
+ if(i<0)return {id:order.find(id=>!S.used.has(id))||order[0],back:true};
+ return null;
+}
+function renderWork(){
+ const p=current();
+ $("#w-no").textContent=disp(p);
+ $("#w-title").textContent=p.ko;
+ $("#w-en").textContent=p.en;
+ $("#w-cat span").textContent=CATS[p.cat];
+ $("#w-web").hidden=!p.web;
+ $("#w-out").textContent=p.out;
+ $("#w-when").textContent=p.when;
+ document.querySelectorAll(".lang button[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===S.lang));
+ const g=$("#o-ground");g.disabled=!!p.builtInGround;g.checked=p.builtInGround?true:S.opt.ground;
+ $("#o-ground-wrap").classList.toggle("locked",!!p.builtInGround);
+ $("#o-ground-lbl").textContent=p.builtInGround?"근거 없는 내용 금지 (기본 포함)":"근거 없는 내용 금지";
+ $("#o-cite-wrap").style.display=p.noCite?"none":"";
+ $("#o-cite").checked=S.opt.cite;$("#o-ko").checked=S.opt.ko;
+ $("#o-ko-wrap").style.display=S.lang==="en"?"":"none";
+ const n=nextOf(p);
+ $("#next").hidden=!n;
+ if(n&&n.handoff){$("#next-lbl").textContent="논문을 모았다면 논문 분석으로";$("#next").dataset.id="";$("#next").dataset.handoff="1"}
+ else if(n){const q=byId(n.id);$("#next-lbl").textContent=`${n.back?"추천 순서로":"다음"}: ${/^\d+$/.test(q.id)?q.id+"번":q.id+"단계"} ${q.ko}`;$("#next").dataset.id=n.id;$("#next").dataset.handoff=""}
+ renderLinks(p);renderStepVars(p);renderPrev(p);renderSave(p);closeEditor();renderEditState();
+ resetCopy();$("#status").className="status";$("#status").textContent="";renderPrompt();
+}
+const STEPVARS={
+ "9":{note:"분석할 기간을 정하면 시간순 단계 구분이 그 범위 안에서 이뤄져요.",f:[["START","시작 연도","예: 2005","numeric"],["END","종료 연도","예: 2025","numeric"]]},
+ "E":{note:"비워 두면 20편으로 요청해요.",f:[["NREAD","읽을 논문 수","20","numeric"]]}
+};
+function renderStepVars(p){
+ const box=$("#w-vars");const c=STEPVARS[p.id];
+ if(!c){box.hidden=true;box.innerHTML="";return}
+ box.hidden=false;
+ box.innerHTML=`<div class="sv-head"><b>이 단계에서 필요한 정보</b><span>${esc(c.note)}</span></div><div class="sv-grid">${c.f.map(([k,l,ph,im])=>`<div class="field"><label for="sv-${k}">${esc(l)}</label><input id="sv-${k}" data-var="${k}" ${im?'inputmode="numeric"':""} placeholder="${esc(ph)}" value="${esc(S.vars[k]||"")}"></div>`).join("")}</div>`;
+}
+function renderLinks(p){
+ const L=LINK[p.id]||{take:[],pass:""};
+ const done=id=>S.run==="split"?!!(S.res[id]||"").trim():S.used.has(id);
+ const take=L.take.length?`<div class="take">${L.take.map(x=>`<button type="button" class="${done(x[0])?"ok":""}" data-go="${x[0]}" title="${esc(stepName(x[0]))}로 가기"><i>${x[0]}</i>${esc(x[1])}</button>`).join("")}</div>`
+  :`<span class="none">첫 단계라 이어받을 결과가 없어요.</span>`;
+ $("#w-links").innerHTML=`<div class="link-box"><b>이어받는 것</b>${take}</div><div class="link-box"><b>다음 단계로 넘길 것</b><p>${esc(L.pass)}</p></div>`;
+}
+function renderPrev(p){
+ const box=$("#w-prev");const t=takes(p);
+ if(S.run!=="split"||!t.length){box.hidden=true;box.innerHTML="";return}
+ box.hidden=false;
+ box.innerHTML=`<p class="prev-title">이어받을 이전 결과</p>`+t.map(x=>{
+  const v=(S.res[x[0]]||"").trim();
+  return `<details data-step="${x[0]}"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg><span>${esc(stepName(x[0]))}</span><span class="st ${v?"":"miss"}">${v?"저장됨, "+fmtLen(v):"비어 있음"}</span></summary><textarea data-res="${x[0]}" placeholder="${esc(stepName(x[0]))}의 AI 답변을 붙여넣으세요.">${esc(S.res[x[0]]||"")}</textarea><div class="row-foot"><button class="mini" type="button" data-go="${x[0]}">그 단계로 가기</button></div></details>`;
+ }).join("");
+}
+function renderSave(p){
+ const box=$("#w-save");
+ if(S.run!=="split"){box.hidden=true;return}
+ box.hidden=false;
+ $("#w-save-hint").textContent="다음 단계에 넘길 것: "+(LINK[p.id]||{}).pass;
+ $("#w-res").value=S.res[p.id]||"";
+ resState();
+}
+function resState(){const v=($("#w-res").value||"").trim();$("#w-res-state").textContent=v?"저장됨, "+fmtLen(v)+". 이 브라우저에 보관돼요.":"아직 비어 있어요."}
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){e.preventDefault();select(g.dataset.go,true)}});
+$("#w-prev").addEventListener("input",e=>{const t=e.target.closest("[data-res]");if(!t)return;S.res[t.dataset.res]=t.value;saveRes();
+ const st=t.closest("details").querySelector(".st");const v=t.value.trim();st.textContent=v?"저장됨, "+fmtLen(v):"비어 있음";st.classList.toggle("miss",!v);renderPrompt();renderLinks(current())});
+$("#w-res").addEventListener("input",e=>{S.res[S.sel[S.mode]]=e.target.value;saveRes();resState();renderLinks(current())});
+$("#w-res-clear").addEventListener("click",()=>{$("#w-res").value="";S.res[S.sel[S.mode]]="";saveRes();resState()});
+
+/* ---------- prompt editor ---------- */
+function renderEditState(){const p=current();const on=!!S.edits[editKey(p)];$("#w-edited").hidden=!on;$("#e-reset").hidden=!on}
+function closeEditor(){$("#w-editor").hidden=true;$("#w-prompt").hidden=false;$("#e-open").hidden=false}
+$("#e-open").addEventListener("click",()=>{
+ const p=current();$("#e-text").value=toDisplay(getTpl(p));$("#e-state").textContent="";
+ $("#w-editor").hidden=false;$("#w-prompt").hidden=true;$("#e-open").hidden=true;$("#e-text").focus();
+});
+$("#e-cancel").addEventListener("click",closeEditor);
+$("#e-save").addEventListener("click",()=>{
+ const p=current();const v=fromDisplay($("#e-text").value.trim());
+ if(!v){$("#e-state").textContent="비어 있는 프롬프트는 저장할 수 없어요.";return}
+ if(v===origTpl(p))delete S.edits[editKey(p)];else S.edits[editKey(p)]=v;
+ store.set("edits",S.edits);closeEditor();renderEditState();renderPrompt();
+ $("#status").className="status";$("#status").textContent=S.edits[editKey(p)]?"수정한 프롬프트를 저장했어요. 이 브라우저에서 계속 쓰입니다.":"원래 프롬프트와 같아서 수정 표시를 지웠어요.";
+});
+$("#e-reset").addEventListener("click",()=>{const p=current();delete S.edits[editKey(p)];store.set("edits",S.edits);closeEditor();renderEditState();renderPrompt();$("#status").className="status";$("#status").textContent="원래 프롬프트로 되돌렸어요."});
+
+/* ---------- export ---------- */
+let downloads=null;
+function exportMd(){
+ const v=S.vars;const d=new Date();const date=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+ const ids=[...MODES.idea.order,...MODES.paper.order,...PP.concat(IP).map(p=>p.id)].filter((x,i,a)=>a.indexOf(x)===i);
+ const saved=ids.filter(id=>(S.res[id]||"").trim());
+ const info=[["연구 아이디어",v.IDEA],["주제",v.TOPIC],["분야",v.FIELD],["연구 목적",v.PURPOSE],["연구 맥락",v.CONTEXT],["선호하는 방법론",v.METHOD&&METHOD_TXT[v.METHOD]?METHOD_TXT[v.METHOD][0]:""],["분석 기간",v.START||v.END?`${v.START||"?"}–${v.END||"?"}`:""]].filter(x=>x[1]).map(x=>`- ${x[0]}: ${x[1]}`).join("\n");
+ const used=ids.filter(id=>S.used.has(id)).map(id=>stepName(id)).join(", ");
+ const md=`# 선행연구 진행 기록\n\n작성일: ${date}\n\n## 연구 정보\n\n${info||"- (입력한 정보 없음)"}\n\n## 복사한 단계\n\n${used||"(없음)"}\n\n`+(saved.length?saved.map(id=>`## ${stepName(id)}\n\n${S.res[id].trim()}`).join("\n\n"):"## 저장한 답변\n\n(없음)")+"\n";
+ return {md,count:saved.length,filename:`선행연구-기록-${date}.md`};
+}
+async function downloadMd(stateEl){
+ const {md,filename,count}=exportMd();
+ try{await downloads.save({filename,data:md});stateEl.textContent=`기록을 내려받았어요. 저장한 답변 ${count}개가 들어 있어요.`}
+ catch(e){stateEl.textContent=e&&e.code==="declined"?"내려받기를 취소했어요.":e&&e.code==="rate_limited"?"이미 열린 저장 창이 있어요. 잠시 뒤 다시 눌러 주세요.":"이 화면에서는 내려받을 수 없어요. '모두 복사'를 이용하세요."}
+}
+function plainDownload(stateEl){
+ const {md,filename,count}=exportMd();
+ try{const url=URL.createObjectURL(new Blob([md],{type:"text/markdown;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);stateEl.textContent=`기록을 내려받았어요. 저장한 답변 ${count}개가 들어 있어요.`}
+ catch(e){stateEl.textContent="내려받지 못했어요. '모두 복사'를 이용하세요."}
+}
+(async()=>{try{if(window.claude&&window.claude.use)downloads=await window.claude.use("downloads")}catch(e){downloads=null}
+ applyDL()})();
+function applyDL(){const can=!!downloads||!(window.claude&&window.claude.use);document.querySelectorAll("[data-dl]").forEach(b=>b.hidden=!can)}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-dl]");if(!b)return;const st=document.getElementById(b.dataset.dl);if(downloads)downloadMd(st);else if(!(window.claude&&window.claude.use))plainDownload(st)});
+
+/* ---------- onboarding ---------- */
+function renderOnboard(){$("#onboard").hidden=!!store.get("seenIntro",false)}
+document.addEventListener("click",e=>{if(e.target.closest("[data-ob-close]")){store.set("seenIntro",true);renderOnboard()}});
+
+/* ---------- run mode ---------- */
+const RUN_DESC={same:"한 대화창에서 단계를 차례로 붙여넣는 방식이에요. 프롬프트 앞에 '앞서 정리한 내용을 이어받으라'는 문장이 붙습니다. 대화가 너무 길어지지 않을 때 가장 간편해요.",
+ split:"단계마다 새 대화를 여는 방식이에요. 각 단계의 AI 답변을 아래 저장 칸에 붙여 두면, 다음 단계 프롬프트 앞에 함께 담겨 복사됩니다. 논문 분석은 AI 서비스의 프로젝트 기능에 논문을 올려 두고 그 안에서 진행하세요."};
+function setRun(r){S.run=r;store.set("run",r);document.querySelectorAll("#run button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.run===r));$("#run-desc").textContent=RUN_DESC[r];if(byId(S.sel[S.mode]))renderWork()}
+document.querySelectorAll("#run button").forEach(b=>b.addEventListener("click",()=>setRun(b.dataset.run)));
+function renderAll(){renderRail();renderList();renderWork()}
+function select(id,scroll){
+ S.sel[S.mode]=id;store.set("sel",S.sel);renderAll();
+ if(scroll)$("#work").scrollIntoView({behavior:reduced()?"auto":"smooth",block:"start"});
+}
+function focusVar(k){
+ const inp=[...document.querySelectorAll(`[data-var="${k}"]`)].find(i=>i.offsetParent!==null);if(!inp)return;
+ const f=inp.closest(".field");inp.scrollIntoView({behavior:reduced()?"auto":"smooth",block:"center"});inp.focus({preventScroll:true});
+ f.classList.remove("flash");void f.offsetWidth;f.classList.add("flash");
+}
+$("#w-prompt").addEventListener("click",e=>{const b=e.target.closest(".ph");if(b)focusVar(b.dataset.k)});
+document.querySelectorAll(".lang button[data-lang]").forEach(b=>b.addEventListener("click",()=>{S.lang=b.dataset.lang;store.set("lang",S.lang);renderWork()}));
+[["o-ground","ground"],["o-cite","cite"],["o-ko","ko"]].forEach(([id,k])=>$("#"+id).addEventListener("change",e=>{S.opt[k]=e.target.checked;store.set("opt",S.opt);renderPrompt()}));
+$("#next").addEventListener("click",e=>{const d=e.currentTarget.dataset;if(d.handoff==="1")return handoff();select(d.id,true)});
+$("#back").addEventListener("click",()=>{const b=document.querySelector(`.item[data-id="${S.sel[S.mode]}"]`);(b||$("#list")).scrollIntoView({behavior:reduced()?"auto":"smooth",block:"center"});b&&b.focus({preventScroll:true})});
+
+/* ---------- copy ---------- */
+let copyTimer;
+function resetCopy(){clearTimeout(copyTimer);$("#copy").classList.remove("done")}
+async function copyText(t){
+ try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t);return true}}catch(e){}
+ try{const ta=document.createElement("textarea");ta.value=t;ta.setAttribute("readonly","");ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();const ok=document.execCommand("copy");ta.remove();return ok}catch(e){return false}
+}
+$("#copy").addEventListener("click",async()=>{
+ const p=current();const ok=await copyText(buildText(p,false));const st=$("#status");
+ if(!ok){st.className="status warn";st.textContent="복사하지 못했어요. 프롬프트 글자를 길게 눌러 직접 선택해 복사하세요.";return}
+ S.used.add(p.id);store.set("used",[...S.used]);
+ $("#copy").classList.add("done");
+ const miss=missing(p);
+ st.className=miss.length?"status warn":"status";
+ st.textContent=miss.length?`복사됨. 빈 항목(${miss.map(k=>VAR_LABEL.ko[k]).join(", ")})은 [ ] 자리표시로 남아 있어요.`
+  :S.run==="split"?"복사됨. 새 대화에 붙여넣고, 받은 답변은 아래 저장 칸에 붙여 두세요."
+  :p.web?"복사됨. 웹 검색이나 리서치 기능을 켠 대화에 붙여넣으세요."
+  :S.mode==="idea"?"복사됨. 새 대화에 붙여넣으세요. 이 단계는 웹 검색이 없어도 됩니다."
+  :"복사됨. 논문을 올린 AI 대화창에 붙여넣으세요.";
+ renderList();renderRail();
+ copyTimer=setTimeout(()=>$("#copy").classList.remove("done"),2200);
+});
+
+/* ---------- AI refine (sample capability) ---------- */
+let sample=null,ctl=null,busy=false;
+function updateRefineBtn(){const b=$("#refine-go");b.disabled=busy||(S.vars.IDEA||"").length<4}
+function refinePrompt(){
+ return `당신은 연구 설계를 돕는 조언자입니다. 사용자는 아직 논문을 읽지 않은 상태에서 막연한 연구 아이디어를 가지고 있습니다. 당신은 웹을 검색할 수 없으므로, 특정 논문 제목, 저자, 연도, 통계 수치를 절대 언급하지 마세요.
+
+아이디어: ${S.vars.IDEA}
+분야: ${S.vars.FIELD||"(미입력)"}
+목적: ${S.vars.PURPOSE||"(미입력)"}
+연구 맥락: ${S.vars.CONTEXT||"(미입력)"}
+선호 방법론: ${S.vars.METHOD?METHOD_TXT[S.vars.METHOD][0]:"(미입력)"}
+
+다음 JSON 객체 하나만 출력하세요. 설명 문장이나 코드 블록 표시는 넣지 마세요. 모든 값은 한국어로 쓰되 키워드의 en 값과 검색식은 영어로 쓰세요.
+{
+ "summary": "아이디어의 핵심 문제를 한 문장으로",
+ "questions": [ {"q":"연구 질문(한 문장)","type":"탐색|설명|평가|비교 중 하나","scope":"대상, 맥락, 기간을 짧게"} ],
+ "concepts": [ {"ko":"핵심 개념","en":"English term","syn":["동의어나 관련어 1-3개"]} ],
+ "queries": {"scholar":"Google Scholar용 영어 불리언 검색식","kci":"KCI·RISS용 한국어 검색식"},
+ "checks": ["본격 조사 전에 확인할 전제 2-4개"]
+}
+questions는 4개, concepts는 3-5개로 하세요.`;
+}
+function errCopy(c){return ({not_granted:"사용 허가가 필요해요. 다시 누르면 허가 창이 열립니다.",rate_limited:"요청이 많아요. 잠시 뒤 다시 눌러 주세요.",session_expired:"로그인이 만료됐어요. 페이지를 새로고침하세요.",invalid_json:"결과 형식을 읽지 못했어요. 다시 시도해 주세요.",refused:"이 아이디어로는 결과를 만들지 못했어요. 표현을 바꿔 보세요.",sampling_disabled:"이 계정에서는 AI 기능을 쓸 수 없어요. A단계 프롬프트를 복사해 대화창에서 쓰세요."})[c]||"결과를 받지 못했어요. 다시 시도하거나 A단계 프롬프트를 복사해 쓰세요."}
+function renderRefine(){
+ const box=$("#refine");const r=S.refine;
+ if(S.mode!=="idea"||(!busy&&!r)){box.hidden=true;return}
+ box.hidden=false;
+ if(busy){box.innerHTML=`<div class="refine-top"><div><h2>아이디어를 다듬는 중</h2><p>질문 후보, 핵심어, 검색식을 만들고 있어요. 보통 10–40초 걸립니다.</p></div><button class="ghost" id="r-stop" type="button">중지</button></div><div class="thinking"><i></i>생각하는 중…</div>`;$("#r-stop").onclick=()=>ctl&&ctl.abort();return}
+ if(r.raw){box.innerHTML=`<div class="refine-top"><div><h2>다듬은 결과</h2><p>연결한 AI의 답이 정해진 형식이 아니어서 받은 그대로 보여드려요. 마음에 드는 질문을 아이디어 칸에 옮겨 적으세요.</p></div><button class="ghost" id="r-close" type="button">닫기</button></div><div class="raw">${esc(r.raw)}</div>`;$("#r-close").onclick=()=>{S.refine=null;store.set("refine",null);renderRefine()};return}
+ if(r.error){box.innerHTML=`<div class="refine-top"><div><h2>다듬기를 마치지 못했어요</h2></div><button class="ghost" id="r-close" type="button">닫기</button></div><p class="r-err">${esc(r.error)}</p>`;$("#r-close").onclick=()=>{S.refine=null;store.set("refine",null);renderRefine()};return}
+ const qs=(r.questions||[]).map((q,i)=>`<li><span class="q">${esc(q.q)}</span><span class="meta">${esc(q.type||"")}${q.scope?", "+esc(q.scope):""}</span><button class="use${S.vars.IDEA===q.q?" picked":""}" type="button" data-qi="${i}">${S.vars.IDEA===q.q?"선택됨":"이 질문으로"}</button></li>`).join("");
+ const cs=(r.concepts||[]).map(c=>`<span class="chip">${esc(c.ko)}<em>${esc(c.en||"")}</em></span>`).join("");
+ const syn=(r.concepts||[]).flatMap(c=>c.syn||[]).map(s=>`<span class="chip">${esc(s)}</span>`).join("");
+ const qy=r.queries||{};
+ box.innerHTML=`<div class="refine-top"><div><h2>${esc(r.summary||"다듬은 결과")}</h2><p>마음에 드는 질문을 고르면 단계별 프롬프트의 아이디어 칸이 그 질문으로 바뀝니다. 이 결과는 웹 검색 없이 만들어졌어요.</p></div><button class="ghost" id="r-close" type="button">닫기</button></div>
+ <div class="r-grid"><div class="r-block"><h3>연구 질문 후보</h3><ul class="qs">${qs}</ul></div>
+ <div class="r-block"><h3>핵심 개념</h3><div class="chips">${cs}</div>${syn?`<h3>함께 찾을 단어</h3><div class="chips">${syn}</div>`:""}
+ <h3>검색식 초안</h3>${qy.scholar?`<div class="qry"><button type="button" data-cq="scholar">복사</button><b>Google Scholar</b><code>${esc(qy.scholar)}</code></div>`:""}${qy.kci?`<div class="qry"><button type="button" data-cq="kci">복사</button><b>KCI, RISS</b><code>${esc(qy.kci)}</code></div>`:""}
+ ${(r.checks||[]).length?`<h3>먼저 확인할 전제</h3><ul class="risks">${r.checks.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>`:""}</div></div>`;
+ $("#r-close").onclick=()=>{S.refine=null;store.set("refine",null);renderRefine()};
+ box.querySelectorAll("[data-qi]").forEach(b=>b.onclick=()=>{
+  const q=r.questions[+b.dataset.qi].q;if(!r.original)r.original=S.vars.IDEA;
+  S.vars.IDEA=q;store.set("vars",S.vars);store.set("refine",r);syncVar("IDEA");renderRefine();renderPrompt("IDEA");
+  $("#refine-note").textContent="선택한 질문이 아이디어 칸에 들어갔어요. 이제 B단계부터 진행하세요.";
+ });
+ box.querySelectorAll("[data-cq]").forEach(b=>b.onclick=async()=>{const ok=await copyText(qy[b.dataset.cq]);b.textContent=ok?"복사됨":"실패";setTimeout(()=>b.textContent="복사",1600)});
+}
+/* provider: claude (in viewer) | openai-compatible (self-hosted) | copy */
+const IN_CLAUDE=!!(window.claude&&window.claude.use);
+const PRESETS=[["Ollama","http://localhost:11434/v1"],["LM Studio","http://localhost:1234/v1"],["llama.cpp","http://localhost:8080/v1"],["vLLM","http://localhost:8000/v1"],["LiteLLM","http://localhost:4000/v1"],["OpenRouter","https://openrouter.ai/api/v1"],["OpenAI","https://api.openai.com/v1"]];
+let AI=Object.assign({kind:"copy",base:"",model:"",key:""},store.get("ai",{}));
+function provider(){if(IN_CLAUDE)return sample?"claude":"copy";return AI.kind==="openai"&&AI.base&&AI.model?"openai":"copy"}
+function parseJSONLoose(t){
+ t=String(t||"").replace(/<think>[\s\S]*?<\/think>/g,"").replace(/```(?:json)?/gi,"").trim();
+ try{return JSON.parse(t)}catch(e){}
+ const a=t.indexOf("{"),b=t.lastIndexOf("}");if(a>=0&&b>a){try{return JSON.parse(t.slice(a,b+1))}catch(e){}}
+ return null;
+}
+async function callOpenAI(prompt,signal,maxTokens){
+ const url=AI.base.replace(/\/+$/,"")+"/chat/completions";
+ const headers={"Content-Type":"application/json"};if(AI.key)headers.Authorization="Bearer "+AI.key;
+ let res;
+ try{res=await fetch(url,{method:"POST",headers,signal,body:JSON.stringify({model:AI.model,messages:[{role:"user",content:prompt}],temperature:0.3,max_tokens:maxTokens||2000})})}
+ catch(e){if(e&&e.name==="AbortError")throw {code:"cancelled"};throw {code:"network"}}
+ if(!res.ok){let detail="";try{detail=(await res.text()).slice(0,160)}catch(e){}throw {code:"http",status:res.status,detail}}
+ const data=await res.json().catch(()=>null);
+ const text=data&&data.choices&&data.choices[0]&&data.choices[0].message?data.choices[0].message.content:"";
+ if(!text)throw {code:"empty_completion"};
+ return text;
+}
+function oaErr(e){
+ if(!e)return "결과를 받지 못했어요.";
+ if(e.code==="network")return "서버에 연결하지 못했어요. 주소와 서버 실행 여부, 브라우저 접근 허용(CORS) 설정을 확인하세요. https 페이지에서는 내부망 http 주소를 부를 수 없어요.";
+ if(e.code==="http"){if(e.status===401||e.status===403)return "인증에 실패했어요. API 키를 확인하세요.";if(e.status===404)return "주소나 모델을 찾지 못했어요. 주소 끝에 /v1이 있는지, 모델명이 맞는지 확인하세요.";if(e.status===429)return "요청 한도에 걸렸어요. 잠시 뒤 다시 시도하세요.";return `서버가 오류를 돌려줬어요 (${e.status}). ${e.detail||""}`.trim()}
+ if(e.code==="empty_completion")return "서버가 빈 답을 돌려줬어요. 모델명을 확인하세요.";
+ return "결과를 받지 못했어요.";
+}
+function renderRefineControls(){
+ const pv=provider();const go=$("#refine-go");
+ go.hidden=false;$("#ai-open").hidden=IN_CLAUDE;$("#refine-copy").hidden=pv==="copy";
+ $("#refine-lbl").textContent=pv==="copy"?"다듬기 프롬프트 복사":"AI로 다듬기";
+ $("#refine-note").textContent=pv==="claude"?"Claude가 질문 후보, 핵심어, 검색식을 제안해요. 첫 사용 때 허가를 묻고, 내 Claude 사용량이 쓰입니다."
+  :pv==="openai"?`연결한 AI(${AI.model})가 질문 후보, 핵심어, 검색식을 제안해요.`
+  :IN_CLAUDE?"프롬프트를 복사해 쓰는 AI에 붙여넣으세요."
+  :"프롬프트를 복사해 쓰는 AI에 붙여넣으세요. 'AI 연결'에서 로컬 AI나 API를 연결하면 이 화면에서 바로 다듬을 수 있어요.";
+ updateRefineBtn();
+}
+async function copyRefine(btn){
+ const ok=await copyText(refinePrompt());
+ $("#refine-note").textContent=ok?"다듬기 프롬프트를 복사했어요. 쓰는 AI에 붙여넣고, 마음에 드는 질문을 아이디어 칸에 옮겨 적으세요.":"복사하지 못했어요. A단계 프롬프트를 복사해 쓰세요.";
+}
+$("#refine-copy").addEventListener("click",()=>copyRefine());
+$("#refine-go").addEventListener("click",async()=>{
+ const pv=provider();
+ if(pv==="copy")return copyRefine();
+ if(busy)return;
+ busy=true;ctl=new AbortController();updateRefineBtn();renderRefine();
+ $("#refine").scrollIntoView({behavior:reduced()?"auto":"smooth",block:"nearest"});
+ try{
+  let data;
+  if(pv==="claude"){data=await sample.json(refinePrompt(),{signal:ctl.signal,modelTier:"default"});if(!data||!Array.isArray(data.questions))throw {code:"invalid_json"};S.refine=data}
+  else{
+   const text=await callOpenAI(refinePrompt(),ctl.signal);
+   data=parseJSONLoose(text);
+   S.refine=data&&Array.isArray(data.questions)?data:{raw:text.replace(/<think>[\s\S]*?<\/think>/g,"").trim()};
+  }
+ }catch(e){
+  S.refine=e&&e.code==="cancelled"?null:{error:pv==="claude"?errCopy(e&&e.code):oaErr(e)};
+ }finally{
+  busy=false;store.set("refine",S.refine&&!S.refine.error?S.refine:null);updateRefineBtn();renderRefine();
+ }
+});
+
+/* settings dialog */
+let draftKind=AI.kind;
+function renderAIForm(){
+ document.querySelectorAll(".ai-kind button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.kind===draftKind));
+ $("#ai-fields").hidden=draftKind!=="openai";$("#ai-copy-note").hidden=draftKind!=="copy";$("#ai-test").hidden=draftKind!=="openai";
+}
+$("#ai-presets").innerHTML=PRESETS.map(([n,u])=>`<button type="button" class="mini" data-preset="${u}">${n}</button>`).join("");
+$("#ai-presets").addEventListener("click",e=>{const b=e.target.closest("[data-preset]");if(b){$("#ai-base").value=b.dataset.preset;$("#ai-state").textContent=""}});
+document.querySelectorAll(".ai-kind button").forEach(b=>b.addEventListener("click",()=>{draftKind=b.dataset.kind;renderAIForm()}));
+$("#ai-open").addEventListener("click",()=>{draftKind=AI.kind;$("#ai-base").value=AI.base;$("#ai-model").value=AI.model;$("#ai-key").value=AI.key;$("#ai-state").textContent="";renderAIForm();$("#ai-dlg").showModal()});
+$("#ai-cancel").addEventListener("click",()=>$("#ai-dlg").close());
+$("#ai-form").addEventListener("submit",e=>e.preventDefault());
+function readForm(){return {kind:draftKind,base:$("#ai-base").value.trim(),model:$("#ai-model").value.trim(),key:$("#ai-key").value.trim()}}
+$("#ai-save").addEventListener("click",()=>{
+ const v=readForm();
+ if(v.kind==="openai"&&(!v.base||!v.model)){$("#ai-state").textContent="주소와 모델을 모두 적어 주세요.";return}
+ AI=v;store.set("ai",AI);$("#ai-dlg").close();renderRefineControls();
+});
+$("#ai-test").addEventListener("click",async()=>{
+ const v=readForm();if(!v.base||!v.model){$("#ai-state").textContent="주소와 모델을 모두 적어 주세요.";return}
+ const prev=AI;AI=v;$("#ai-state").textContent="연결하는 중…";
+ try{const t=await callOpenAI('Reply with only this JSON: {"ok":true}',undefined,50);$("#ai-state").textContent=parseJSONLoose(t)?"연결됐어요. 응답 형식도 정상이에요.":"연결은 됐지만 응답 형식이 불안정해요. 결과가 글로 표시될 수 있어요."}
+ catch(e){$("#ai-state").textContent=oaErr(e)}
+ finally{AI=prev}
+});
+(async()=>{
+ try{if(IN_CLAUDE)sample=await window.claude.use("sample")}catch(e){sample=null}
+ renderRefineControls();
+})();
+
+/* ---------- how-to page ---------- */
+function linkRows(mode){
+ const md=MODES[mode];const seen=new Set();let rows="";
+ const row=id=>{const p=byId(id);const L=LINK[id];seen.add(id);
+  return `<tr><td><em>${disp(p)}</em>${esc(p.ko)}</td><td>${L.take.length?L.take.map(x=>`${x[0]} ${esc(x[1])}`).join("<br>"):'<span class="muted">없음</span>'}</td><td>${esc(L.pass)}</td></tr>`};
+ md.flow.forEach((s,i)=>{if(!s.ids.length)return;rows+=`<tr class="grp"><td colspan="3">${i+1}단계 ${esc(s.name)}</td></tr>`+s.ids.map(row).join("")});
+ const rest=md.list.filter(p=>!seen.has(p.id));
+ if(rest.length)rows+=`<tr class="grp"><td colspan="3">필요할 때</td></tr>`+rest.map(p=>row(p.id)).join("");
+ return `<div class="tbl"><table><thead><tr><th>단계</th><th>이어받는 것</th><th>다음 단계로 넘길 것</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function renderHow(){
+ $("#view-how").innerHTML=`<article class="how">
+ <h1>사용 방법</h1>
+ <p class="lead">선행연구 길잡이는 아이디어에서 연구 의제까지 가는 길을 안내합니다. 아이디어를 다듬는 사전 조사부터 모은 논문을 분석해 연구 의제를 세우기까지, 프롬프트를 순서대로 이어 쓰는 방법을 정리했어요. 대학원생과 연구원이 문헌 연구를 시작할 때 쓰도록 만들었습니다.</p>
+ <ul class="toc">
+  <li><a href="#how-start">출발점 고르기</a></li><li><a href="#how-run">진행 방식 고르기</a></li><li><a href="#how-steps">따라 하기</a></li>
+  <li><a href="#how-links">단계 간 연결</a></li><li><a href="#how-find">논문 찾고 내려받기</a></li><li><a href="#how-ethics">연구에 쓸 때 주의할 점</a></li><li><a href="#how-faq">자주 묻는 질문</a></li><li><a href="#how-data">저장된 내용 관리</a></li>
+ </ul>
+
+ <section id="how-start"><h2>출발점 고르기</h2>
+ <p>프롬프트 화면 맨 위에서 지금 상황에 맞는 쪽을 고르세요. 사전 조사의 마지막 단계에서 논문 분석으로 바로 넘어갈 수 있습니다.</p>
+ <div class="pair">
+  <div><h3>아이디어만 있어요</h3><p>주제는 떠올랐지만 아직 읽은 논문이 거의 없을 때.</p><ul><li>A, B단계는 웹 검색 없이 질문과 검색식을 만듭니다.</li><li>C단계부터는 웹 검색이나 리서치 기능을 켠 대화에서 실제 문헌을 찾습니다.</li><li>E단계의 읽기 목록으로 논문을 내려받으면 끝납니다.</li></ul></div>
+  <div><h3>논문을 모았어요</h3><p>분석할 논문 PDF가 이미 있을 때. 보통 20–50편 정도를 가정합니다.</p><ul><li>1번으로 모든 논문을 읽었는지 확인한 뒤 주제 구조를 잡습니다.</li><li>증거 매트릭스, 모순, 약점을 차례로 점검합니다.</li><li>연구 기회와 참신성을 거쳐 개념적 틀과 연구 의제로 마무리합니다.</li></ul></div>
+ </div></section>
+
+ <section id="how-run"><h2>진행 방식 고르기</h2>
+ <p>각 단계의 결과는 다음 단계의 재료가 됩니다. 결과를 어떻게 넘길지에 따라 두 가지 방식이 있고, '추천 순서' 오른쪽에서 바꿀 수 있어요.</p>
+ <div class="pair">
+  <div><h3>한 대화에서 이어서</h3><p>단계마다 같은 대화창에 프롬프트를 이어 붙여넣습니다.</p><ul><li>앞 결과가 대화에 남아 있어 따로 옮길 필요가 없어요.</li><li>프롬프트 앞에 '앞서 정리한 내용을 이어받으라'는 문장이 자동으로 붙습니다.</li><li>논문이 많거나 단계가 길어지면 대화가 길이 한도에 닿아 앞 내용이 흐려질 수 있어요.</li></ul></div>
+  <div><h3>대화를 나눠서</h3><p>단계마다 새 대화를 열고, 이전 결과를 함께 넘깁니다.</p><ul><li>각 단계의 AI 답변을 이 페이지의 저장 칸에 붙여 둡니다.</li><li>다음 단계에서 복사하면 필요한 이전 결과가 프롬프트 앞에 담겨 함께 복사돼요.</li><li>논문 분석은 AI 서비스의 프로젝트 기능(Claude 프로젝트, ChatGPT 프로젝트 등)에 논문을 올려 두고, 그 프로젝트 안에서 단계별 대화를 여세요.</li></ul></div>
+ </div>
+ <p class="muted">고르기 어렵다면 사전 조사는 한 대화에서, 논문이 많은 분석은 프로젝트와 '대화를 나눠서'로 진행하는 것을 권합니다.</p></section>
+
+ <section id="how-steps"><h2>따라 하기</h2>
+ <ol class="steps">
+  <li><b>연구 정보를 입력하세요</b><span>첫 화면에서는 주제(또는 아이디어)와 분야만 적으면 됩니다. '결과를 더 정확하게'를 펼쳐 연구 목적, 연구 맥락, 선호하는 방법론을 적으면 갭과 연구 설계를 다루는 단계가 그 조건에 맞춰집니다. 9번의 분석 기간, E단계의 읽을 논문 수처럼 특정 단계에만 필요한 정보는 그 단계 카드에서 따로 물어봐요. 비어 있는 필수 값은 프롬프트 안에 노란 테두리로 보입니다.</span></li>
+  <li><b>추천 순서에서 단계를 고르세요</b><span>목록은 추천 순서대로 묶여 있습니다. 각 단계 카드의 '이어받는 것'과 '다음 단계로 넘길 것'을 보면 앞뒤 관계를 알 수 있어요.</span></li>
+  <li><b>언어와 옵션을 정하세요</b><span>영어 프롬프트가 지시를 더 일관되게 따르는 편입니다. 영어로 쓰더라도 '한국어로 답변'을 켜면 답은 한국어로 받아요.</span></li>
+  <li><b>복사해서 AI 대화창에 붙여넣으세요</b><span>논문 분석이라면 논문 파일을 먼저 올리고, 웹 검색 배지가 있는 단계라면 웹 검색을 켠 뒤 붙여넣습니다.</span></li>
+  <li><b>답변을 저장하세요 (대화를 나눠서 진행할 때)</b><span>받은 답변을 그 단계의 저장 칸에 붙여 두세요. 이 브라우저에만 보관됩니다.</span></li>
+  <li><b>'다음' 버튼으로 넘어가세요</b><span>복사한 단계는 추천 순서에 체크로 표시됩니다. 사전 조사의 마지막에서는 '논문 분석으로'를 눌러 모드를 바꾸면 아이디어가 주제 칸으로 옮겨집니다.</span></li>
+ </ol></section>
+
+ <section id="how-links"><h2>단계 간 연결</h2>
+ <p>어떤 단계가 어떤 결과를 이어받는지 한눈에 볼 수 있습니다. '필요할 때' 묶음은 순서와 상관없이 쓰되, 표의 이어받는 결과가 있으면 함께 넘기세요.</p>
+ <h3 style="font-size:15px;margin:20px 0 0">사전 조사</h3>${linkRows("idea")}
+ <h3 style="font-size:15px;margin:24px 0 0">논문 분석</h3>${linkRows("paper")}</section>
+
+ <section id="how-find"><h2>논문 찾고 내려받기</h2>
+ <p>사전 조사의 C, D, E단계는 AI의 웹 검색이나 리서치 기능으로 읽을 논문을 찾아 목록으로 정리합니다. 다만 원문을 확보하고 서지 정보가 정확한지 확인하는 일은 학술 데이터베이스에서 직접 해야 해요.</p>
+ <div class="pair">
+  <div><h3>AI가 하는 일</h3><ul><li>리뷰, 대표 연구, 최신 연구를 찾아 제목, 저자, 연도, DOI와 함께 정리합니다.</li><li>연구 흐름별로 묶고 읽을 순서를 제안합니다.</li><li>직접 검색에서 놓친 문헌을 보완합니다.</li></ul></div>
+  <div><h3>연구자가 하는 일</h3><ul><li>학술 데이터베이스에서 검색식으로 직접 검색합니다.</li><li>DOI나 링크를 열어 서지 정보가 맞는지 확인합니다.</li><li>원문 PDF를 내려받아 논문 분석 모드에 올립니다.</li></ul></div>
+ </div>
+ <p class="muted">AI는 PDF를 내려받아 주지 않고, 웹 검색은 로그인이 필요한 학술 DB나 국내 DB의 내용을 잘 찾지 못할 수 있어요. 존재하지 않는 논문이나 틀린 연도가 섞일 가능성도 남아 있습니다.</p>
+ <ol class="steps">
+  <li><b>B단계의 검색식으로 직접 검색하세요</b><span>해외 논문은 Google Scholar, Scopus, Web of Science에서, 국내 논문은 KCI, RISS, DBpia에서 찾습니다. 소속 기관 도서관을 거쳐 접속하면 구독 중인 원문까지 열 수 있는 경우가 많아요.</span></li>
+  <li><b>C, E단계로 넓게 훑으세요</b><span>웹 검색보다 리서치 기능이 더 많은 출처를 확인합니다. 직접 검색 결과와 비교해 빠진 문헌을 채우세요.</span></li>
+  <li><b>DOI로 확인한 뒤 내려받으세요</b><span>두 목록을 합쳐 중복을 지우고, DOI나 링크를 열어 제목, 저자, 연도가 맞는 논문만 남깁니다.</span></li>
+  <li><b>무료 원문 경로를 찾아보세요</b><span>저자 공개본, 소속 기관 리포지터리, 사전 공개 논문을 확인하세요. 구독하지 않는 논문은 도서관의 원문 복사 서비스를 이용할 수 있어요.</span></li>
+  <li><b>서지 관리 도구에 모아 두세요</b><span>Zotero 같은 도구에 DOI로 등록하면 서지 정보가 자동으로 채워지고, 나중에 참고문헌 목록을 만들 때도 편합니다.</span></li>
+ </ol>
+ <div class="tbl"><table><thead><tr><th>어디서</th><th>무엇을 찾을 때</th><th>참고할 점</th></tr></thead><tbody>
+  <tr><td>Google Scholar</td><td>분야를 가리지 않고 넓게 찾을 때</td><td>무료. 인용 수와 관련 논문을 따라가기 좋지만 학술지 품질은 직접 판단해야 해요.</td></tr>
+  <tr><td>Scopus, Web of Science</td><td>해외 등재 학술지를 체계적으로 찾을 때</td><td>기관 구독이 필요해요. 고급 검색과 서지 내보내기가 강점입니다.</td></tr>
+  <tr><td>KCI</td><td>국내 등재 학술지 논문</td><td>국내 학술지 중심이고 무료로 원문을 볼 수 있는 논문이 많아요.</td></tr>
+  <tr><td>RISS</td><td>국내 학위논문과 학술지</td><td>학위논문을 찾을 때 특히 유용하고, 원문 이용 범위는 소속 기관에 따라 달라요.</td></tr>
+  <tr><td>DBpia</td><td>국내 학술지 원문</td><td>대부분 기관 구독으로 이용합니다.</td></tr>
+  <tr><td>arXiv, SSRN</td><td>최신 연구를 빨리 볼 때</td><td>무료지만 동료 심사 전 원고일 수 있어요. 출판본이 있는지 확인하세요.</td></tr>
+ </tbody></table></div>
+ </section>
+
+ <section id="how-ethics"><h2>연구에 쓸 때 주의할 점</h2>
+ <p><b>결과는 초안으로 다루세요.</b> AI가 정리한 주장과 인용은 반드시 원문과 대조하세요. 존재하지 않는 논문이나 틀린 연도, 원문에 없는 수치가 섞일 수 있습니다. 검색 기반 단계에서도 DOI와 링크를 직접 열어 확인하세요.</p>
+ <p><b>AI 사용 지침을 확인하세요.</b> 투고처, 학위 과정, 연구 과제 기관마다 생성형 AI 사용 범위와 공개 방법이 다릅니다. 요구되는 경우 방법 절이나 감사의 글 등에 사용 사실을 밝히세요.</p>
+ <p><b>올리는 자료의 권리를 확인하세요.</b> 구독 데이터베이스에서 받은 논문을 외부 AI 서비스에 올려도 되는지 소속 기관의 이용 약관을 확인하세요. 심사 중인 원고, 미공개 데이터, 개인정보가 담긴 자료는 올리지 않는 것이 안전합니다.</p>
+ <p><b>판단은 연구자의 몫입니다.</b> 연구 갭, 참신성, 실현 가능성 평가는 AI가 읽은 범위 안에서만 의미가 있어요. 지도교수, 동료와의 검토를 대신하지 않습니다.</p></section>
+
+ <section id="how-faq"><h2>자주 묻는 질문</h2>
+ <details><summary>논문이 너무 많아서 한 대화에 다 올라가지 않아요</summary><p>AI 서비스의 프로젝트 기능으로 프로젝트를 만들어 논문을 올리고, 진행 방식을 '대화를 나눠서'로 바꾸세요. 그래도 많다면 하위 주제별로 논문을 나눠 1번과 5번을 따로 돌린 뒤, 결과를 합쳐 다음 단계로 넘기는 방법이 있습니다.</p></details>
+ <details><summary>1번에서 왜 논문 목록부터 보여주나요?</summary><p>파일이 많으면 일부 PDF의 텍스트가 추출되지 않거나 길이 한도로 잘려도 AI가 나머지만으로 고찰을 쓰는 경우가 있어요. 분석 전에 읽은 논문 목록(저자, 연도, 제목)을 확인하면 누락을 바로 알 수 있습니다. 빠진 논문이 있으면 파일을 다시 올리거나 텍스트가 추출되는 PDF로 바꿔 주세요.</p></details>
+ <details><summary>같은 프롬프트인데 결과가 매번 달라요</summary><p>생성형 AI의 특성입니다. 중요한 단계는 두세 번 돌려 공통으로 나오는 내용을 중심으로 보세요. '근거 없는 내용 금지'와 '(저자, 연도) 인용'을 켜 두면 확인하기 쉬워집니다.</p></details>
+ <details><summary>모든 단계를 다 해야 하나요?</summary><p>아니요. 목적에 맞춰 고르면 됩니다. 문헌고찰 장을 쓰는 중이라면 1, 5, 4, 9번이, 연구 주제를 찾는 중이라면 6, 12, 3, 15, 13번이 중심이 됩니다. 건너뛴 단계의 결과는 비어 있는 채로 넘어가요.</p></details>
+ <details><summary>한국어와 영어 중 무엇으로 쓰는 게 좋아요?</summary><p>영어 프롬프트에 '한국어로 답변'을 켜는 조합을 권합니다. 영어 논문을 다룰 때 용어가 덜 흔들리고, 답은 한국어로 받을 수 있어요.</p></details>
+ <details><summary>AI로 다듬기는 무엇을 하나요?</summary><p>사전 조사 모드에서 아이디어를 연구 질문 후보, 핵심 개념, 검색식 초안으로 바꿔 줍니다. 웹을 검색하지 않으므로 논문 제목이나 통계는 넣지 않도록 되어 있어요.</p></details>
+ <details><summary>어떤 AI로 다듬을 수 있나요?</summary><p>두 가지 방법이 있어요. 첫째, '다듬기 프롬프트 복사'로 프롬프트를 복사해 ChatGPT, Claude, Gemini, 로컬 AI 화면 등 쓰는 곳에 붙여넣습니다. 둘째, 'AI 연결'에서 OpenAI 호환 주소(Ollama, LM Studio, llama.cpp, vLLM, LiteLLM, OpenRouter 등)를 연결하면 이 화면에서 바로 다듬을 수 있어요. 채팅 서비스 구독과 API 이용은 별개라, 연결하려면 API 키나 로컬 서버가 필요합니다.</p></details>
+ <details><summary>프롬프트를 내 방식대로 고칠 수 있나요?</summary><p>네. 프롬프트 위의 '프롬프트 수정'을 누르면 직접 고칠 수 있어요. {주제}, {분야}처럼 중괄호로 감싼 칸은 입력값으로 바뀌니 그대로 두세요. 수정한 프롬프트에는 '수정됨' 표시가 붙고, '원래대로'로 언제든 되돌릴 수 있습니다. 한국어와 영어 버전은 따로 저장돼요.</p></details>
+ <details><summary>저장한 답변은 어디에 있나요?</summary><p>이 브라우저의 저장 공간에만 있습니다. 다른 기기나 다른 브라우저에서는 보이지 않고, 브라우저 데이터를 지우면 사라집니다. 아래에서 마크다운 파일로 내려받아 따로 보관하세요.</p></details>
+ </section>
+
+ <section id="how-data"><h2>저장된 내용 관리</h2>
+ <p>입력한 연구 정보와 단계별로 저장한 AI 답변을 연구 노트용 마크다운 파일로 내려받거나, 한꺼번에 복사하거나 지울 수 있습니다. 지우기에는 직접 수정한 프롬프트도 포함돼요.</p>
+ <div class="data-actions"><button class="ghost" data-dl="d-state" type="button" hidden>마크다운 파일로 내려받기</button><button class="ghost" id="d-copy" type="button">저장한 답변 모두 복사</button><button class="ghost danger" id="d-clear" type="button">저장한 내용 모두 지우기</button><span class="muted" id="d-state" style="font-size:13px"></span></div>
+ </section>
+ </article>`;
+ applyDL();
+ $("#d-copy").onclick=async()=>{
+  const ids=[...MODES.idea.order,...MODES.paper.order,...PP.concat(IP).map(p=>p.id)].filter((v,i,a)=>a.indexOf(v)===i).filter(id=>(S.res[id]||"").trim());
+  if(!ids.length){$("#d-state").textContent="저장한 답변이 아직 없어요. '대화를 나눠서' 방식에서 각 단계의 저장 칸에 붙여 두세요.";return}
+  const md=`# 연구 진행 기록\n\n- 주제: ${S.vars.TOPIC||S.vars.IDEA||"(미입력)"}\n- 분야: ${S.vars.FIELD||"(미입력)"}\n\n`+ids.map(id=>`## ${stepName(id)}\n\n${S.res[id].trim()}`).join("\n\n");
+  const ok=await copyText(md);$("#d-state").textContent=ok?`${ids.length}개 단계의 답변을 마크다운으로 복사했어요.`:"복사하지 못했어요. 각 단계의 저장 칸에서 직접 복사하세요.";
+ };
+ let armed=false;
+ $("#d-clear").onclick=()=>{
+  if(!armed){armed=true;$("#d-clear").textContent="한 번 더 누르면 모두 지워져요";setTimeout(()=>{armed=false;$("#d-clear").textContent="저장한 내용 모두 지우기"},4000);return}
+  try{Object.keys(localStorage).filter(k=>k.startsWith("ppg:")).forEach(k=>localStorage.removeItem(k))}catch(e){}
+  location.hash="";location.reload();
+ };
+}
+function route(){
+ const how=location.hash.startsWith("#how");
+ $("#view-guide").hidden=how;$("#view-how").hidden=!how;
+ document.querySelectorAll(".nav a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.view===(how?"how":"guide")));
+ document.querySelectorAll(".nav a").forEach(a=>{if(a.hasAttribute("aria-current"))a.setAttribute("aria-current","page")});
+ if(how){const t=location.hash.length>4?document.getElementById(location.hash.slice(1)):null;if(t)t.scrollIntoView({behavior:reduced()?"auto":"smooth"});else scrollTo(0,0)}
+ else moveThumb();
+}
+addEventListener("hashchange",route);
+$("#q").addEventListener("focus",()=>{if(location.hash.startsWith("#how"))location.hash=""});
+
+/* ---------- init ---------- */
+if(!byId(S.sel.paper))S.sel.paper="1";
+if(!byId(S.sel.idea))S.sel.idea="A";
+document.querySelectorAll(".sorter button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.sort===S.sort));
+renderOnboard();
+renderMore();
+setRun(S.run);
+setMode(S.mode);
+renderHow();route();
+if(document.fonts)document.fonts.ready.then(moveThumb);
+
+})();
+</script>
+</body>
+</html>
